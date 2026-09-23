@@ -1,0 +1,28 @@
+{
+  "source": "compustat_sample.csv",
+  "source_sha256": "4039b808153c6190df13925f85734fa03637d4b9938561afeab6e2be10612199",
+  "source_rows": 725,
+  "unique_firms": 25,
+  "unique_firm_years": 725,
+  "duplicate_firm_year_rows": 0,
+  "first_fiscal_year": 1995,
+  "last_fiscal_year": 2023,
+  "missing_by_column": {
+    "gvkey": 0,
+    "conm": 0,
+    "fyear": 0,
+    "ni": 0,
+    "at": 0,
+    "rect": 0,
+    "invt": 0,
+    "dpc": 15,
+    "oancf": 23
+  },
+  "exclusion_reasons_may_overlap": {
+    "missing_or_invalid_ni": 0,
+    "missing_or_invalid_at": 0,
+    "nonpositive_at": 0
+  },
+  "excluded_rows": 0,
+  "valid_roa_rows": 725
+}
