@@ -193,7 +193,22 @@
     <div class="card gold"><span class="label">Agent with tools</span><div class="visual-icon" aria-hidden="true">↻</div><h3>Produces the figure</h3><p>It fetches, runs and checks.</p></div>
   </div>
   <div class="bar soft">A chat interface can support either workflow.</div>
-  <aside class="notes">2:00–6:00 (4 minutes). Use the real FRED/Stata example that returns on the research and demo slides. An advice-only chat can suggest the calculation or Stata commands; the person still fetches the data, runs the code and brings errors back. An agent with the relevant tools can fetch the public FRED CSV, inspect it, write and run a Stata do-file, and produce a figure and audit. The distinction is tool access and feedback, not the visual shape of the interface. Neither workflow establishes scientific correctness by itself.</aside>
+  <aside class="notes">
+    <p>2:00–6:00 (4 minutes). Copy this exact prompt into an advice-only ChatGPT conversation and then into a coding agent with local Stata access:</p>
+    <pre>Using FRED's public CSV download, make a Stata chart comparing US 12-month
+CPI inflation (CPIAUCSL) with the effective federal funds rate (FEDFUNDS)
+from January 2019 onward. Calculate inflation as
+100 * (CPI this month / CPI 12 months earlier - 1).
+
+Fetch and inspect the data, write a reusable Stata do-file, and run it if
+you have access to Stata. Check missing months, units, and one inflation
+value. Show the code, chart, sources, and any errors you encountered.
+
+If you cannot run Stata, give me the code and exact steps to run it, and
+say what you could not verify. Do not make a causal claim.</pre>
+    <p>Advice-only: copy the suggested code into Stata yourself. If Stata returns an actual error, paste it back into the chat and show the manual repair loop. If it runs cleanly, show the manual download, execution and checks instead; do not manufacture an error.</p>
+    <p>Agent: use the same prompt in a coding workspace with tool access to local Stata. Let it fetch, write, run, inspect and revise. This workstation can run Stata through the terminal; a dedicated Stata MCP is not configured in this task. A separate Stata MCP would also work if available. Use the saved FRED snapshot and prepared outputs on the demo resources slide if the live run stalls. Tool use does not establish scientific correctness; review the result.</p>
+  </aside>
 </section>
 
 <section id="what-is-agent">
