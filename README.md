@@ -35,15 +35,16 @@ http://localhost:8000.
 
 - Arrow keys or Space: navigate.
 - O: overview.
-- S: presenter view, including slide timings and notes.
+- S or the footer's Speaker notes button: open the current slide's notes on the page.
+- Slide 2's notes include a Copy prompt button for the live comparison.
 - F: fullscreen.
 - The footer links directly to Q&A and references.
 
-The deck uses the existing Reveal.js 4.6.1 runtime, now included locally along
-with its notes plugin and MIT license. Fonts use the system font stack. Slides,
+The deck uses the existing Reveal.js 4.6.1 runtime, now included locally with
+its MIT license. Fonts use the system font stack. Slides,
 images and reference demo outputs load without a CDN or font service; external
-resource links still need an internet connection. Speaker view needs a local
-server or the hosted site and may require allowing a popup.
+resource links still need an internet connection. Speaker notes open on the
+same page, so they work in browsers that block popups.
 
 ## Live demonstration
 
