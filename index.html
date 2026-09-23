@@ -144,12 +144,16 @@
     .figure-card figcaption { font-size:15px; color:var(--muted); text-align:center; margin-top:4px; }
     .exercise-mock { min-height:336px; }
     .exercise-mock .label { display:block; color:var(--muted); font-size:16px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-    .exercise-mock h3 { margin:12px 0 36px; }
-    .mock-slider { display:flex; align-items:center; gap:20px; font-size:22px; }
-    .mock-track { display:block; flex:1; height:9px; background:#e6d48d; border-radius:9px; position:relative; }
-    .mock-track i { position:absolute; left:65%; top:-8px; width:25px; height:25px; border-radius:50%; background:#b58e00; }
-    .mock-answer { margin:25px 0; padding:16px; background:var(--panel); border-radius:9px; font-size:25px; }
+    .exercise-mock h3 { margin:12px 0 26px; }
+    .yield-row { display:flex; align-items:center; justify-content:space-between; font-size:22px; }
+    .yield-row output { color:#806400; font-weight:700; }
+    .bond-yield-slider { display:block; width:100%; margin:16px 0 4px; accent-color:#b58e00; cursor:pointer; }
+    .bond-yield-slider:focus-visible { outline:3px solid var(--teal); outline-offset:5px; }
+    .bond-scale { display:flex; justify-content:space-between; color:var(--muted); font-size:15px; }
+    .mock-answer { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:18px 0 8px; padding:16px; background:var(--panel); border-radius:9px; font-size:25px; }
     .mock-answer strong { font-size:35px; }
+    .bond-price-track { height:9px; margin-bottom:14px; border-radius:9px; background:#e6d48d; overflow:hidden; }
+    .bond-price-track span { display:block; height:100%; width:82.19%; background:var(--teal); transition:width .15s ease-out; }
     .exercise-mock small { color:var(--muted); }
     .spectrum .card { min-height:270px; }
     .spectrum .card p { font-size:21px; }
@@ -317,9 +321,9 @@ say what you could not verify. Do not make a causal claim.</pre>
   <h2>Build an exercise students can test</h2>
   <div class="grid two use-case-grid">
     <div class="use-case-list"><div><strong>1</strong> Choose a learning goal</div><div><strong>2</strong> Let the agent build it</div><div><strong>3</strong> Test the explanation</div><p class="small muted">You decide what students should learn.</p></div>
-    <div class="exercise-mock" role="img" aria-label="Illustrative bond pricing exercise: a yield slider and a bond price that falls as yield rises"><span class="label">Illustrative exercise</span><h3>Bond price and yield</h3><div class="mock-slider"><span>Yield</span><span class="mock-track"><i></i></span><strong>↑</strong></div><div class="mock-answer">Bond price <strong>↓</strong></div><small>Students change an input and explain the result.</small></div>
+    <div class="exercise-mock"><span class="label">Try it</span><h3>Bond price and yield</h3><div class="yield-row"><label for="bond-yield">Yield</label><output id="bond-yield-value" for="bond-yield">4.0%</output></div><input class="bond-yield-slider" id="bond-yield" type="range" min="0" max="10" step="0.5" value="4" aria-describedby="bond-assumptions"><div class="bond-scale"><span>0%</span><span>10%</span></div><div class="mock-answer">Price today <strong id="bond-price">€82.19</strong></div><div class="bond-price-track" aria-hidden="true"><span id="bond-price-bar"></span></div><small id="bond-assumptions">€100 paid in 5 years · no coupons</small></div>
   </div>
-  <aside class="notes">29:00–33:00 (4 minutes). A lecturer can describe a learning goal and have the agent build a small interactive exercise, test cases, a synthetic dataset or a visual explanation. This mock bond-pricing exercise illustrates the direction of the relationship. The teacher must check the calculations, units, wording and accessibility and decide whether it supports the learning objective. Be clear that UU policy constrains assessment: AI is not a substitute for the lecturer's evaluation of students.</aside>
+  <aside class="notes">29:00–33:00 (4 minutes). Invite someone to move the slider and predict what happens to the price. This is a simplified zero-coupon bond that pays €100 in five years: price = 100 / (1 + yield/100)^5. At 0% the price is €100; at 10% it is about €62.09. The exercise makes the inverse price-yield relationship visible, holding the future payment and maturity fixed. A lecturer can ask an agent to build this kind of exercise, then check the formula, boundary values, units, wording and accessibility. The teacher decides whether it serves the learning goal and remains responsible for assessment.</aside>
 </section>
 
 <section id="thesis-spectrum">
@@ -524,6 +528,16 @@ Include instructions so I can reproduce the result.</code></pre>
       }
     });
   });
+  var bondYield = document.getElementById("bond-yield");
+  function updateBondExercise() {
+    var yieldPercent = Number(bondYield.value);
+    var price = 100 / Math.pow(1 + yieldPercent / 100, 5);
+    document.getElementById("bond-yield-value").textContent = yieldPercent.toFixed(1) + "%";
+    document.getElementById("bond-price").textContent = "€" + price.toFixed(2);
+    document.getElementById("bond-price-bar").style.width = price + "%";
+  }
+  bondYield.addEventListener("input", updateBondExercise);
+  updateBondExercise();
 </script>
 </body>
 </html>
