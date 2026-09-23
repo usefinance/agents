@@ -1,1372 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code Workshop — USE Finance</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/black.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-<style>
-/* ── Theme overrides ───────────────────────────────────────── */
-:root {
-  --accent:  #f5b800;   /* UU gold */
-  --amber:   #f5b800;
-  --red:     #c8171c;   /* UU shield crimson */
-  --teal:    #0d9488;
-  --bg:      #0e0c07;   /* warm near-black */
-  --bg2:     #1c1904;   /* warm dark */
-  --border:  #2e2a0e;
-  --muted:   #8a8260;
-  --green:   #34d399;
-}
-
-/* Override Reveal black theme */
-.reveal-viewport { background: var(--bg); }
-.reveal { font-family: 'Open Sans', sans-serif; color: #e4dfc8; }
-
-.reveal h1, .reveal h2, .reveal h3 {
-  font-family: 'Open Sans', sans-serif;
-  text-transform: none;
-  letter-spacing: -0.01em;
-  color: #ffffff;
-}
-.reveal h1 { font-size: 2.0em; font-weight: 700; line-height: 1.15; }
-.reveal h2 { font-size: 1.4em; font-weight: 700; margin-bottom: 0.45em; }
-.reveal h3 { font-size: 0.95em; font-weight: 700; color: #f5b800; margin-bottom: 0.35em; }
-
-.reveal .slides section { text-align: left; padding: 0 44px 54px; box-sizing: border-box; }
-.reveal .slides section.center-slide { text-align: center; }
-
-/* Progress bar */
-.reveal .progress { height: 4px; }
-.reveal .progress span { background: var(--accent); }
-.reveal .controls { color: var(--accent); }
-.reveal .slide-number {
-  background: rgba(245,184,0,0.3);
-  color: #0a0900;
-  font-family: 'Roboto Mono', monospace;
-  font-size: 11px;
-  border-radius: 4px;
-}
-
-/* ── Utility classes ───────────────────────────────────────── */
-.accent { color: var(--accent); }
-.amber  { color: var(--amber); }
-.green  { color: var(--green); }
-.muted  { color: var(--muted); }
-em { color: #fde68a; font-style: normal; }
-
-/* ── DETAIL slide background ───────────────────────────────── */
-.detail { background: var(--bg2) !important; }
-
-/* ── Eyebrow labels ────────────────────────────────────────── */
-.eyebrow {
-  font-size: 0.38em;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--amber);
-  margin-bottom: 0.25em;
-  display: block;
-}
-
-/* ── Down-hint ─────────────────────────────────────────────── */
-.down-hint {
-  position: absolute;
-  bottom: 18px;
-  left: 0; right: 0;
-  text-align: center;
-  font-size: 0.32em;
-  color: rgba(255,255,255,0.28);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
-/* ── Bullet lists ──────────────────────────────────────────── */
-.reveal ul { list-style: none; margin: 0; padding: 0; }
-.reveal ul li {
-  font-size: 0.72em;
-  line-height: 1.55;
-  margin-bottom: 0.38em;
-  display: block;
-  position: relative;
-  padding-left: 1.1em;
-}
-.reveal ul li::before {
-  content: '›';
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 1.15em;
-  position: absolute;
-  left: 0;
-  top: -0.02em;
-}
-.reveal ul.large li { font-size: 0.85em; margin-bottom: 0.5em; }
-.reveal ul.small li { font-size: 0.55em; }
-
-/* ── Inline code ───────────────────────────────────────────── */
-.reveal p code, .reveal li code, .reveal td code {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.82em;
-  background: rgba(245,184,0,0.16);
-  color: #fde68a;
-  padding: 1px 6px;
-  border-radius: 4px;
-}
-
-/* ── Code blocks ───────────────────────────────────────────── */
-.reveal pre {
-  width: 100%;
-  box-shadow: none;
-  border-radius: 8px;
-  margin: 0.3em 0;
-  background: #161408;
-  border: 1px solid var(--border);
-  font-size: 0.52em;
-}
-.reveal pre code {
-  font-family: 'Roboto Mono', monospace;
-  padding: 0.75em 1em;
-  background: transparent;
-  font-size: 1em;
-  line-height: 1.55;
-  max-height: none;
-  overflow: hidden;
-  white-space: pre-wrap;
-  word-break: break-all;
-  tab-size: 2;
-}
-.code-wrap { position: relative; }
-.copy-btn {
-  position: absolute;
-  top: 7px; right: 8px;
-  background: #29240a;
-  border: none;
-  border-radius: 5px;
-  color: #b8a860;
-  font-size: 11px;
-  padding: 3px 9px;
-  cursor: pointer;
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 600;
-  transition: all 0.15s;
-  z-index: 10;
-}
-.copy-btn:hover { background: var(--accent); color: #fff; }
-.copy-btn.ok    { background: #065f46; color: #6ee7b7; }
-
-/* ── Tables ────────────────────────────────────────────────── */
-.reveal table { font-size: 0.52em; width: 100%; border-collapse: collapse; }
-.reveal table thead tr { background: var(--accent); }
-.reveal table th {
-  color: #0a0900;
-  padding: 0.5em 0.75em;
-  text-align: left;
-  font-size: 1em;
-  font-weight: 600;
-}
-.reveal table td {
-  padding: 0.42em 0.75em;
-  border-bottom: 1px solid var(--border);
-  color: #d4c898;
-  vertical-align: top;
-}
-.reveal table tr:last-child td { border-bottom: none; }
-.reveal table tr:nth-child(even) td { background: rgba(255,255,255,0.03); }
-.reveal table td:first-child { font-weight: 600; color: #ebe3bc; }
-.reveal table a { color: var(--accent); }
-
-/* ── Callouts ──────────────────────────────────────────────── */
-.callout {
-  font-size: 0.52em;
-  border-radius: 8px;
-  padding: 0.55em 0.75em;
-  margin: 0.4em 0;
-  display: flex;
-  gap: 0.6em;
-  align-items: flex-start;
-  line-height: 1.55;
-  color: #e4dfc8;
-}
-.callout-icon { font-size: 1.25em; flex-shrink: 0; margin-top: 0.05em; }
-.callout.tip  { background: rgba(245,184,0,0.12);   border-left: 3px solid var(--accent); }
-.callout.warn { background: rgba(200,23,28,0.12);   border-left: 3px solid var(--red); }
-.callout.go   { background: rgba(52,211,153,0.10);  border-left: 3px solid var(--green); }
-
-/* ── Before/After ──────────────────────────────────────────── */
-.ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 0.5em; }
-.ba-head {
-  font-weight: 700;
-  font-size: 1.05em;
-  padding-bottom: 0.35em;
-  margin-bottom: 0.35em;
-  border-bottom: 2px solid;
-}
-.ba-col { border-radius: 10px; padding: 0.5em 0.7em; }
-.ba-col.before { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.25); }
-.ba-col.after  { background: rgba(52,211,153,0.07);  border: 1px solid rgba(52,211,153,0.25); }
-.ba-col.before .ba-head { color: #f87171; border-color: #f87171; }
-.ba-col.after  .ba-head { color: #34d399; border-color: #34d399; }
-.ba-row {
-  position: relative;
-  padding: 0.32em 0 0.32em 1.1em;
-  border-bottom: 1px solid #1e1c07;
-  color: #c8bf90;
-  line-height: 1.45;
-}
-.ba-row:last-child { border-bottom: none; }
-.ba-dot { width: 6px; height: 6px; border-radius: 50%; position: absolute; left: 0; top: 0.65em; }
-.ba-col.before .ba-dot { background: #f87171; }
-.ba-col.after  .ba-dot { background: #34d399; }
-
-/* ── Timeline ──────────────────────────────────────────────── */
-.timeline { display: flex; gap: 14px; margin: 0.5em 0; }
-.tl-card {
-  flex: 1;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 0.55em 0.8em;
-  font-size: 0.5em;
-  transition: border-color 0.2s;
-}
-.tl-card.now { border-color: var(--accent); background: rgba(245,184,0,0.12); }
-.tl-year { color: var(--amber); font-weight: 700; font-size: 1.05em; margin-bottom: 0.18em; }
-.tl-era  { color: #fff; font-weight: 700; font-size: 1.1em; margin-bottom: 0.15em; }
-.tl-desc { color: var(--muted); line-height: 1.45; }
-
-/* ── Concept grid ──────────────────────────────────────────── */
-.concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 0.35em; }
-.concept-item {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 0.55em 0.7em;
-  font-size: 0.48em;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6em;
-}
-.concept-letter {
-  width: 26px; height: 26px;
-  background: var(--accent);
-  color: #0a0900;
-  border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700;
-  font-size: 1.15em;
-  flex-shrink: 0;
-}
-.concept-name { font-weight: 700; color: #fff; }
-.concept-sub  { color: var(--muted); font-size: 0.9em; margin-top: 0.1em; }
-
-/* ── Plan pills ────────────────────────────────────────────── */
-.plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.48em; }
-.plan-pill {
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 0.65em 0.8em;
-}
-.plan-pill.star { border-color: var(--accent); }
-.pp-name  { font-weight: 700; color: #fff; font-size: 1.05em; }
-.plan-pill.star .pp-name { color: var(--accent); }
-.pp-price { color: var(--amber); font-size: 0.9em; margin: 0.1em 0 0.22em; }
-.pp-desc  { color: var(--muted); line-height: 1.45; }
-
-/* ── Flow diagram ──────────────────────────────────────────── */
-.flow { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin: 0.4em 0; font-size: 0.5em; }
-.fn { background: #2a2608; border: 1px solid var(--border); border-radius: 7px; padding: 0.28em 0.65em; font-weight: 600; }
-.fn.agent { background: var(--accent); border-color: var(--accent); color: #0a0900; }
-.fn.tool  { background: #1a1e2e; border-color: #30354e; font-family: 'Roboto Mono', monospace; font-size: 0.95em; color: #89b4fa; }
-.fa { color: #6a6240; font-size: 1.3em; }
-
-/* ── Memory compare ────────────────────────────────────────── */
-.mem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.5em; margin-bottom: 0.4em; }
-.mem-card { border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
-.mem-head { background: #201e08; padding: 0.5em 0.8em; font-weight: 700; color: var(--accent); font-family: 'Roboto Mono', monospace; font-size: 1em; }
-.mem-body { padding: 0.55em 0.8em; color: var(--muted); line-height: 1.45; }
-
-/* ── Demo result bar ───────────────────────────────────────── */
-.demo-result {
-  background: rgba(52,211,153,0.09);
-  border-left: 3px solid var(--green);
-  border-radius: 6px;
-  padding: 0.5em 0.7em;
-  font-size: 0.52em;
-  color: #a7f3d0;
-  margin-top: 0.35em;
-  line-height: 1.5;
-  display: flex;
-  gap: 0.5em;
-}
-
-/* ── AI Ladder ─────────────────────────────────────────────── */
-.ai-ladder { display: flex; flex-direction: column; gap: 6px; margin: 0.35em 0; font-size: 0.48em; }
-.ladder-rung {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7em;
-  padding: 0.35em 0.6em;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  line-height: 1.4;
-}
-.ladder-rung.now { border-color: var(--accent); background: rgba(245,184,0,0.12); }
-.ladder-num {
-  width: 22px; height: 22px;
-  border-radius: 6px;
-  background: #29240a;
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 1.1em;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.ladder-rung.now .ladder-num { background: var(--accent); color: #0a0900; }
-.ladder-label { font-weight: 700; color: #fff; }
-.ladder-desc  { color: var(--muted); font-size: 0.9em; }
-
-/* ── Prompt cards ──────────────────────────────────────────── */
-.prompt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 0.47em; }
-.prompt-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-.prompt-head { background: var(--accent); color: #0a0900; padding: 0.55em 0.8em; font-weight: 700; font-size: 1.05em; }
-.prompt-body { padding: 0.55em 0.8em; color: var(--muted); font-family: 'Roboto Mono', monospace; font-size: 0.92em; line-height: 1.5; }
-
-/* ── Demo number badge ─────────────────────────────────────── */
-.demo-badge {
-  display: inline-flex;
-  align-items: center; justify-content: center;
-  width: 30px; height: 30px;
-  background: var(--accent);
-  color: #0a0900;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.6em;
-  vertical-align: middle;
-  margin-right: 0.25em;
-}
-
-/* ── Checklist ─────────────────────────────────────────────── */
-.checklist { list-style: none !important; font-size: 0.62em; }
-.checklist li { display: flex !important; align-items: center; gap: 0.55em; padding: 0.32em 0; border-bottom: 1px solid #1e1c07; margin-bottom: 0 !important; }
-.checklist li::before { display: none !important; }
-.check-box {
-  width: 18px; height: 18px;
-  border: 2px solid #2e2a0e;
-  border-radius: 4px;
-  flex-shrink: 0;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.8em;
-  transition: all 0.15s;
-  color: #fff;
-}
-li.done .check-box { background: var(--accent); border-color: var(--accent); }
-
-/* ── Title slide ───────────────────────────────────────────── */
-.title-bg {
-  background:
-    radial-gradient(ellipse at 50% -10%, rgba(245,184,0,0.22) 0%, transparent 60%),
-    linear-gradient(160deg, #0e0c07 0%, #1c1900 60%, #0a0900 100%) !important;
-}
-.title-logo {
-  height: 90px;
-  border-radius: 12px;
-  display: block;
-  margin: 0 auto 0.6em;
-  border: 2px solid rgba(245,184,0,0.55);
-  box-shadow: 0 6px 28px rgba(0,0,0,0.45);
-}
-.title-slide { text-align: center !important; }
-.title-sub  { font-size: 0.6em; color: rgba(255,255,255,0.6); font-weight: 300; margin-top: 0.2em; }
-.title-meta { margin-top: 1.4em; font-size: 0.42em; color: rgba(255,255,255,0.38); }
-
-/* ── Kbd ───────────────────────────────────────────────────── */
-kbd {
-  display: inline-block;
-  background: #201e08;
-  border: 1px solid #2e2a0e;
-  border-radius: 4px;
-  padding: 1px 6px;
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.85em;
-  color: #fde68a;
-}
-
-/* ── Light mode ────────────────────────────────────────── */
-body.light .reveal-viewport { background: #fffdf0; }
-body.light .reveal .slide-background { background: #fffdf0 !important; }
-body.light .reveal .slide-background.has-dark-background { background: #fffdf0 !important; }
-body.light .reveal { color: #1a1600; }
-body.light .reveal h1, body.light .reveal h2, body.light .reveal h3 { color: #1a1600; }
-body.light .reveal .slides section { background: transparent; }
-body.light .detail { background: #fff8d6 !important; }
-body.light .reveal pre { background: #fdf9e8; border-color: #e8d890; }
-body.light .reveal pre code { color: #1a1600; }
-body.light .reveal table td { color: #2a1e00; }
-body.light .reveal table td:first-child { color: #1a1600; }
-body.light .ba-col.before { background: #fff8d6; border-color: #e8d890; }
-body.light .ba-col.after  { background: #ecfdf5; border-color: #6ee7b7; }
-body.light .ba-row { color: #2a1e00; border-bottom-color: #e8d890; }
-body.light .ladder-rung { border-color: #e8d890; }
-body.light .ladder-rung.now { background: rgba(245,184,0,0.14); }
-body.light .ladder-num { background: #fff3b0; color: #7a5c00; }
-body.light .callout      { color: #2a1e00; }
-body.light .callout.tip  { background: rgba(245,184,0,0.10); }
-body.light .callout.warn { background: rgba(200,23,28,0.07); }
-body.light .callout.go   { background: rgba(52,211,153,0.08); }
-body.light .muted { color: #6a5c20; }
-body.light em { color: #7a5c00; }
-body.light .mem-card, body.light .prompt-card { border-color: #e8d890; }
-body.light .mem-card-header { background: #fff3b0; }
-body.light .concept-item { background: #fff8d6; border-color: #e8d890; }
-body.light .tl-card { background: #fff8d6; border-color: #e8d890; }
-body.light .tl-card.now { background: rgba(245,184,0,0.18); border-color: var(--accent); }
-body.light .plan-pill { background: #fff8d6; border-color: #e8d890; }
-body.light .copy-btn { background: #fff3b0; color: #5a3f00; }
-body.light .down-hint { color: rgba(26,22,0,0.35); }
-body.light .reveal .slide-number { background: rgba(245,184,0,0.25); color: #1a1600; }
-body.light .title-bg {
-  background:
-    radial-gradient(ellipse at 50% -10%, rgba(245,184,0,0.5) 0%, transparent 60%),
-    linear-gradient(160deg, #fffdf0 0%, #fff8d0 60%, #fdf3b0 100%) !important;
-}
-body.light .title-bg h1 { color: #1a1600; }
-body.light .title-sub { color: #3a2e00; }
-body.light .title-meta { color: #5a4c10; }
-body.light .reveal p code, body.light .reveal li code, body.light .reveal td code {
-  background: rgba(245,184,0,0.14); color: #5a3f00;
-}
-body.light .demo-result { background: rgba(52,211,153,0.12); border-color: #059669; color: #065f46; }
-body.light .demo-badge { background: var(--accent); color: #0a0900; }
-body.light .eyebrow { color: #7a5c00; }
-body.light .fn { background: #fff8d6; }
-body.light .fn.agent { color: #0a0900; }
-body.light .flow-arrow { color: #a07800; }
-body.light kbd { background: #fff3b0; border-color: #e8d890; color: #1a1600; }
-body.light .reveal a { color: #7a5c00; }
-/* White-text overrides */
-body.light .tl-era        { color: #1a1600; }
-body.light .concept-name  { color: #1a1600; }
-body.light .pp-name       { color: #1a1600; }
-body.light .ladder-label  { color: #1a1600; }
-body.light .mem-body      { color: #2a1e00; }
-body.light .prompt-body   { color: #2a1e00; }
-body.light .ladder-desc   { color: #5a4c10; }
-body.light .concept-sub   { color: #5a4c10; }
-body.light .tl-desc       { color: #5a4c10; }
-body.light .pp-desc       { color: #5a4c10; }
-/* Card contrast on light backgrounds */
-body.light .plan-pill      { background: #fffdf0; border-color: #d4a800; }
-body.light .plan-pill.star { border-color: var(--accent); background: rgba(245,184,0,0.08); }
-body.light .tl-card        { background: #fffdf0; border-color: #d4a800; }
-body.light .tl-card.now    { background: rgba(245,184,0,0.14); border-color: var(--accent); }
-body.light .concept-item   { background: #fffdf0; border-color: #d4a800; }
-body.light .ladder-rung    { background: #fffdf0; border-color: #d4a800; }
-body.light .ladder-rung.now { background: rgba(245,184,0,0.14); border-color: var(--accent); }
-body.light .ba-col.before  { background: rgba(248,113,113,0.07); border-color: rgba(248,113,113,0.3); }
-body.light .ba-col.after   { background: rgba(52,211,153,0.08);  border-color: rgba(52,211,153,0.3); }
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Coding agents for researchers: models, harnesses, tools and reproducible workflows. A 40-minute presentation, 10-minute demonstration and 10-minute Q&A.">
+  <title>Coding Agents for Researchers — USE Finance</title>
+  <link rel="stylesheet" href="assets/vendor/reveal/reveal.css">
+  <style>
+    :root { --gold:#ffcd00; --ink:#19180f; --muted:#625e4b; --paper:#fffdf5; --panel:#fff7d4; --line:#dfd7b4; --teal:#086b61; --red:#a32127; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); }
+    .reveal-viewport { background:var(--paper); }
+    .reveal { font-family:"Segoe UI",Arial,sans-serif; color:var(--ink); font-size:28px; }
+    .reveal .slides { text-align:left; }
+    .reveal .slides > section { height:700px; padding:60px 70px 78px; box-sizing:border-box; }
+    .reveal h1,.reveal h2,.reveal h3 { font-family:inherit; font-weight:700; color:var(--ink); text-transform:none; letter-spacing:-.035em; }
+    .reveal h1 { font-size:76px; line-height:1.04; margin:0 0 24px; }
+    .reveal h2 { font-size:46px; line-height:1.12; margin:0 0 30px; }
+    .reveal h3 { font-size:27px; line-height:1.2; margin:0 0 14px; }
+    .reveal p { margin:0 0 22px; line-height:1.42; }
+    .reveal a { color:#665100; text-decoration:underline; text-underline-offset:3px; }
+    .reveal a:hover { color:var(--teal); }
+    .reveal a:focus-visible,.reveal button:focus-visible { outline:3px solid var(--teal); outline-offset:5px; }
+    .reveal strong { font-weight:700; }
+    .reveal small { font-size:20px; }
+    .eyebrow { display:block; margin-bottom:16px; color:#786000; font-size:16px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+    .lead { font-size:31px; line-height:1.4; max-width:950px; }
+    .muted { color:var(--muted); }
+    .small { font-size:22px; }
+    .tiny { font-size:18px; }
+    .grid { display:grid; gap:24px; }
+    .two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .four { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px; }
+    .card p { font-size:24px; margin-bottom:0; }
+    .card.gold { background:var(--panel); border-color:#d9b42a; }
+    .card.teal { background:#edf8f4; border-color:#aacfc4; }
+    .card .label { display:block; color:var(--muted); font-size:16px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; }
+    .bar { margin-top:26px; padding:18px 24px; background:var(--gold); border-radius:10px; font-size:25px; line-height:1.35; }
+    .bar.soft { background:var(--panel); border:1px solid var(--line); }
+    .reveal ul { display:block; list-style:none; padding:0; margin:0; }
+    .reveal li { position:relative; padding-left:28px; margin:0 0 18px; line-height:1.4; }
+    .reveal li::before { content:"›"; position:absolute; left:0; color:#917200; font-weight:700; }
+    .reveal .compact li { font-size:24px; margin-bottom:12px; }
+    .reveal code { font-family:Consolas,"Liberation Mono",monospace; font-size:.88em; background:#f6efd7; border-radius:4px; padding:2px 6px; overflow-wrap:anywhere; }
+    .reveal pre { margin:0; box-shadow:none; width:100%; font-size:22px; line-height:1.4; }
+    .reveal pre code { display:block; white-space:pre-wrap; overflow-wrap:normal; word-break:normal; max-height:none; background:#f5f1e3; border:1px solid var(--line); border-radius:12px; padding:24px; }
+    .code-wrap { position:relative; }
+    .copy-btn { margin-top:12px; padding:8px 14px; border:1px solid #b49a38; background:#fff; border-radius:6px; font:600 16px "Segoe UI",Arial,sans-serif; color:var(--ink); cursor:pointer; }
+    .copy-btn:hover { background:var(--gold); }
+    .reveal table { width:100%; margin:0; border-collapse:collapse; font-size:24px; }
+    .reveal table th { padding:16px 18px; background:var(--gold); text-align:left; border:0; }
+    .reveal table td { padding:18px; border-bottom:1px solid var(--line); line-height:1.3; vertical-align:top; }
+    .reveal table tr:last-child td { border-bottom:0; }
+    .source { position:absolute; left:70px; bottom:40px; right:80px; margin:0!important; color:var(--muted); font-size:13px; line-height:1.3!important; }
+    .source a { color:var(--muted); }
+    .deck-footer { position:fixed; left:28px; bottom:16px; z-index:20; max-width:calc(100% - 180px); font:13px "Segoe UI",Arial,sans-serif; color:#706b54; }
+    .deck-footer a { color:inherit; text-decoration:none; }
+    .deck-footer button { padding:0; border:0; background:none; color:inherit; font:inherit; cursor:pointer; }
+    .deck-footer button:hover,.deck-footer a:hover { text-decoration:underline; }
+    .deck-footer button:focus-visible,.deck-footer a:focus-visible { outline:2px solid var(--teal); outline-offset:4px; }
+    .deck-footer .sep { margin:0 10px; color:#b4a978; }
+    .reveal .controls { color:#816600; bottom:12px; }
+    .reveal .progress { height:5px; color:#c9a300; background:#eee7ce; }
+    .reveal .slide-number { background:none; font:14px "Segoe UI",Arial,sans-serif; color:#706b54; right:118px; bottom:19px; }
+    .reveal .slide-number a { text-decoration:none; }
+    .reveal kbd { font:18px Consolas,monospace; background:#fff; border:1px solid var(--line); border-radius:4px; padding:2px 7px; }
+    .reveal .title-slide { text-align:center; background:radial-gradient(ellipse at 50% 35%,#fff7d0 0%,var(--paper) 70%); }
+    .reveal .corner { position:absolute; top:28px; width:136px; height:136px; padding:8px; border:2px solid #d6ad00; border-radius:14px; background:#fff; box-shadow:0 4px 14px #42340012; display:block; }
+    .corner.left { left:48px; }
+    .corner.right { right:48px; }
+    .reveal .corner img { display:block; width:100%; height:100%; max-width:none; max-height:none; margin:0; object-fit:contain; }
+    .corner-label { position:absolute; top:174px; width:180px; font-size:12px; font-weight:600; letter-spacing:.04em; color:var(--muted); text-align:center; }
+    .corner-label.left { left:26px; }
+    .corner-label.right { right:26px; }
+    .title-content { padding-top:168px; }
+    .title-content .eyebrow { margin-bottom:18px; }
+    .title-content p { font-size:28px; color:var(--muted); }
+    .session-pills { display:flex; justify-content:center; gap:14px; margin-top:30px; }
+    .pill { border:1px solid #ccb449; border-radius:40px; padding:10px 18px; font-size:18px; background:#fffdf5; }
+    .pill strong { color:#685300; }
+    .navigation-hint { margin-top:24px!important; font-size:16px!important; }
+    .request { border-left:5px solid var(--gold); padding:12px 22px; margin-bottom:26px!important; background:#fff; font-size:30px; }
+    .steps { display:flex; align-items:stretch; gap:10px; margin-top:28px; }
+    .step { flex:1; border:1px solid #d4c797; border-radius:10px; padding:18px 10px; text-align:center; background:#fff; font-size:21px; font-weight:600; }
+    .step .n { display:block; font-size:14px; color:#8c7640; margin-bottom:8px; }
+    .step.active { background:var(--gold); border-color:var(--gold); }
+    .harness { border:3px solid #b99600; background:var(--panel); border-radius:18px; padding:24px; }
+    .harness-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+    .harness-title strong { font-size:28px; }
+    .model-row { display:grid; grid-template-columns:1fr 52px 1fr; align-items:center; gap:10px; }
+    .model-box { background:var(--ink); color:#fff; border-radius:12px; padding:26px; }
+    .model-box h3 { color:var(--gold); }
+    .model-box p { font-size:24px; margin:0; }
+    .arrow { text-align:center; font-size:38px; color:#8a6e00; }
+    .harness-tags { display:flex; gap:12px; margin-top:20px; }
+    .harness-tags span { flex:1; text-align:center; font-size:20px; border:1px solid #d6c678; background:#fff; border-radius:8px; padding:10px; }
+    .big-number { font-size:43px; font-weight:700; color:#8a6d00; margin-bottom:14px; }
+    .review-grid .card { padding:23px; }
+    .review-grid .card h3 { font-size:25px; }
+    .review-grid .card p { font-size:22px; }
+    .task-brief { font-size:25px; line-height:1.48; background:#fff; padding:25px 28px; border:1px solid var(--line); border-left:6px solid var(--gold); border-radius:10px; }
+    .task-brief p { margin-bottom:14px; font-size:25px; }
+    .task-brief p:last-child { margin:0; }
+    .task-brief mark { color:inherit; background:#fff0a8; padding:0 4px; }
+    .deliverables { display:flex; gap:12px; flex-wrap:wrap; margin-top:22px; }
+    .deliverables span { font-size:19px; padding:10px 16px; background:#edf6f1; border:1px solid #bdd6cb; border-radius:8px; }
+    .qa { text-align:center!important; background:var(--gold); }
+    .qa h1 { margin-top:95px; font-size:88px; }
+    .qa .lead { margin:24px auto; }
+    .qa a { color:var(--ink); }
+    .links { font-size:23px; line-height:1.35; }
+    .links li { margin-bottom:16px; }
+    .reference-table { font-size:21px!important; }
+    .reference-table td { padding:13px 16px!important; }
+    .appendix .eyebrow { color:var(--teal); }
+    .reveal .slides section .fragment { opacity:1; visibility:visible; }
+    @media (prefers-reduced-motion:reduce) { * { transition:none!important; animation:none!important; } }
+    @media print { .deck-footer,.copy-btn,.navigation-hint { display:none!important; } .reveal a { color:var(--ink); } }
+  </style>
 </head>
-<body class="light">
-<div class="reveal">
-<div class="slides">
+<body>
+<div class="reveal"><div class="slides">
 
-<!-- ══════════════════════════════════════════════════════════
-     TITLE
-══════════════════════════════════════════════════════════ -->
-<section class="title-slide title-bg">
-  <img src="assets/images/Finance.png" class="title-logo" alt="Finance @ Utrecht University">
-  <h1>Claude Code</h1>
-  <div class="title-sub">AI Coding Agents for (Finance) Researchers</div>
-  <div class="title-meta">
-    60-minute hands-on workshop &nbsp;·&nbsp; No programming experience required<br><br>
-    Navigate with <kbd>→</kbd> for next topic &nbsp;·&nbsp; <kbd>↓</kbd> for detail on any topic<br>
-    Press <kbd>O</kbd> (letter&nbsp;O, not zero) to browse all slides at once
+<!-- 18 main slides / 40 minutes. Presenter timings are in the notes (press S). -->
+<section id="welcome" class="title-slide" aria-label="Coding agents for researchers">
+  <a class="corner left" href="https://usefinance.github.io/agents/" aria-label="Open the slides; QR code links to this presentation">
+    <img src="assets/images/slides-qr.svg" alt="QR code for https://usefinance.github.io/agents/">
+  </a>
+  <span class="corner-label left">SCAN FOR SLIDES &amp; DEMO</span>
+  <a class="corner right" href="https://www.linkedin.com/company/finance-utrecht/" aria-label="Finance at Utrecht University">
+    <img src="assets/images/Finance.png" alt="Finance at Utrecht University">
+  </a>
+  <span class="corner-label right">UTRECHT SCHOOL OF ECONOMICS</span>
+  <div class="title-content">
+    <span class="eyebrow">Research · Teaching · Everyday work</span>
+    <h1>Coding agents<br>for researchers</h1>
+    <p>From a question to a reproducible result</p>
+    <div class="session-pills"><span class="pill"><strong>40 min</strong> presentation</span><span class="pill"><strong>10 min</strong> live demo</span><span class="pill"><strong>10 min</strong> Q&amp;A</span></div>
+    <p class="navigation-hint"><kbd>→</kbd> next &nbsp; <kbd>O</kbd> overview &nbsp; <kbd>S</kbd> speaker notes &nbsp; · &nbsp; No live installation required</p>
   </div>
+  <aside class="notes">0:00–1:00 (1 minute). Welcome. This is a presentation and demonstration for researchers. Scan the QR for these slides and the demo files, linked from the reference slides. Programming experience varies; we will focus on directing and checking work. Explain the 40 + 10 + 10 schedule.</aside>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════
-     0 · BEFORE THE WORKSHOP
-══════════════════════════════════════════════════════════ -->
-<section>
-
-  <!-- 0a — Overview -->
-  <section>
-    <span class="eyebrow">Before the Workshop</span>
-    <h2>Setup — Pick Your Track</h2>
-    <div style="display:flex; gap:0.8em; margin-top:0.45em;">
-      <div style="flex:1; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:0.7em 0.8em; font-size:0.42em;">
-        <p style="font-weight:700; font-size:1.15em; margin:0 0 0.3em; color:var(--accent);">A &nbsp;·&nbsp; Cloud Only</p>
-        <p style="color:var(--muted); margin:0 0 0.4em;">Browser + free account. No local install. Safe — nothing runs on your machine.</p>
-        <ul style="margin:0; padding-left:1.1em; color:var(--fg);">
-          <li>0 min setup</li>
-          <li>Works for Demo 5 live</li>
-          <li>All other demos: watch + try at home</li>
-        </ul>
-      </div>
-      <div style="flex:1; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:0.7em 0.8em; font-size:0.42em;">
-        <p style="font-weight:700; font-size:1.15em; margin:0 0 0.3em; color:var(--accent);">B &nbsp;·&nbsp; Desktop App + GitHub</p>
-        <p style="color:var(--muted); margin:0 0 0.4em;">Install Claude Desktop. Connect GitHub MCP. Can also read and write local files via MCP — no terminal required.</p>
-        <ul style="margin:0; padding-left:1.1em; color:var(--fg);">
-          <li>~10 min setup</li>
-          <li>Works for Demos 1–3 live (with MCP)</li>
-          <li>No <code>/skill</code> shortcuts</li>
-        </ul>
-      </div>
-      <div style="flex:1; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:0.7em 0.8em; font-size:0.42em;">
-        <p style="font-weight:700; font-size:1.15em; margin:0 0 0.3em; color:var(--accent);">C &nbsp;·&nbsp; Full CLI</p>
-        <p style="color:var(--muted); margin:0 0 0.4em;">Node.js + Claude Code. Default mode always asks before touching any file. Required for <code>/skill</code> invocations and local code execution.</p>
-        <ul style="margin:0; padding-left:1.1em; color:var(--fg);">
-          <li>~15 min setup</li>
-          <li>All 7 demos live</li>
-          <li>Required for <code>/skill</code> shortcuts</li>
-        </ul>
-      </div>
-    </div>
-    <div class="callout tip" style="margin-top:0.45em;">
-      <span class="callout-icon">👇</span>
-      <span>Scroll <strong>↓</strong> for step-by-step instructions on each track. Come back with <strong>→</strong> when you're ready.</span>
-    </div>
-  </section>
-
-  <!-- 0b — Track A: Cloud Only -->
-  <section class="detail">
-    <h3>Track A — Cloud Only (No Install)</h3>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.1em 0 0.2em;">Step 1 — Create a free Anthropic account</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash"># Open in your browser:
-https://claude.ai</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.3em 0 0.1em;">Step 2 — Create a Project</p>
-    <p style="font-size:0.42em; margin:0 0 0.3em;">Click <strong>Projects → New Project</strong>. Give it a name (e.g. <em>Workshop</em>). Upload any PDF or text file as context.</p>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.1em 0 0.1em;">Step 3 — You're ready</p>
-    <p style="font-size:0.42em; margin:0 0 0.3em;">Follow <strong>Demo 5</strong> live (academic homepage from CV). For the <code>/skill</code> demos, watch along — you can run them yourself with Track B later.</p>
-    <div class="callout tip" style="margin-top:0.3em;">
-      <span class="callout-icon">🔒</span>
-      <span><strong>Nothing runs on your machine.</strong> Claude.ai is a web interface — no files are created or modified locally. The Pro plan ($20/mo) gives longer conversations and priority access; the free plan is fine for today.</span>
-    </div>
-  </section>
-
-  <!-- 0c — Track B: Desktop App + GitHub -->
-  <section class="detail">
-    <h3>Track B — Claude Desktop App + GitHub</h3>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.1em 0 0.2em;">Step 1 — Install Claude Desktop</p>
-    <p style="font-size:0.42em; margin:0 0 0.3em;">Download from <strong>claude.ai/download</strong>. Sign in with your Anthropic account.</p>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.1em 0 0.08em;">Step 2 — Connect GitHub MCP</p>
-    <p style="font-size:0.42em; margin:0 0 0.3em;">In Claude Desktop: <strong>Settings → Extensions → GitHub → Authorize</strong>. This lets Claude read and push to your repositories.</p>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.1em 0 0.08em;">Step 3 (optional) — Add local file access</p>
-    <p style="font-size:0.42em; margin:0 0 0.3em;">Add a filesystem MCP server to give Claude access to a specific folder on your machine — without using the terminal.</p>
-    <div class="callout tip" style="margin-top:0.3em;">
-      <span class="callout-icon">💡</span>
-      <span><strong>Works locally too.</strong> MCP servers let the Desktop App read and modify files in a folder you specify. The underlying task prompts from the demos work here — only the <code>/skill-name</code> shortcuts require the CLI.</span>
-    </div>
-  </section>
-
-  <!-- 0d — Track C: Full CLI -->
-  <section class="detail">
-    <h3>Track C — Full CLI (~15 min)</h3>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.1em 0 0.08em;">Step 1 — Install Node.js 18+ &nbsp;(<code>node --version</code> to check; if missing: Mac <code>brew install node</code> · Windows <code>winget install OpenJS.NodeJS</code> · Linux <code>nvm install --lts</code>)</p>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.3em 0 0.08em;">Step 2 — Install Claude Code &amp; authenticate</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">npm install -g @anthropic-ai/claude-code
-claude            # Opens browser → sign in with your Anthropic account
-claude --version  # Verify install</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.3em 0 0.08em;">Optional — also install Codex or Gemini CLI to compare</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">npm install -g @openai/codex          # OpenAI Codex CLI
-npm install -g @google/gemini-cli    # Google Gemini CLI</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="callout warn" style="margin-top:0.3em;">
-      <span class="callout-icon">⚠️</span>
-      <span><strong>Set a spending cap before your first session.</strong> Go to <strong>console.anthropic.com → Settings → Billing</strong> and set a monthly limit (e.g. $10). Default mode always asks before touching files — nothing runs without your approval.</span>
-    </div>
-  </section>
-
-  <!-- 0e — Data Retention & Privacy -->
-  <section class="detail">
-    <h3>Data Retention &amp; Privacy</h3>
-    <table style="font-size:0.43em;">
-      <thead><tr><th>Interface</th><th>Used to train AI?</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td>Claude.ai Free / Pro</td><td>Potentially yes</td><td>Consumer product; Anthropic may use conversations</td></tr>
-        <tr><td>Claude API (key)</td><td><strong style="color:#34d399">No</strong></td><td>API terms explicitly exclude training use</td></tr>
-        <tr><td>Claude for Work / Teams</td><td><strong style="color:#34d399">No</strong></td><td>Enterprise DPA available on request</td></tr>
-        <tr><td>ChatGPT (consumer)</td><td>Potentially yes</td><td>Can opt out in Settings → Data Controls</td></tr>
-        <tr><td>OpenAI API</td><td><strong style="color:#34d399">No</strong></td><td>API terms explicitly exclude training use</td></tr>
-      </tbody>
-    </table>
-    <div class="callout tip" style="margin-top:0.4em;">
-      <span class="callout-icon">🧠</span>
-      <span>Consumer interfaces (claude.ai, ChatGPT) may use conversations to improve the model. <strong>Before uploading any data, know what you're sharing.</strong> When in doubt, use the API — your conversations are not used for training.</span>
-    </div>
-  </section>
-
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     1 · THE PROBLEM
-══════════════════════════════════════════════════════════ -->
-<section>
-
-  <!-- 1a — Main slide -->
-  <section>
-    <span class="eyebrow">Section 1</span>
-    <h2>Execution &amp; Supervision</h2>
-    <ul class="large">
-      <li><strong>Research execution</strong> — Python, R, factor models, data cleaning, regressions, replication packages</li>
-      <li><strong>Production tasks</strong> — Beamer slides, TikZ diagrams, LaTeX tables, CV updates, academic homepage</li>
-      <li><strong>Teaching &amp; communication</strong> — lecture slides, referee reports, meeting summaries, course materials</li>
-    </ul>
-    <div class="callout tip" style="margin-top:0.6em;">
-      <span class="callout-icon">💡</span>
-      <span>You direct and supervise. Claude executes and iterates. Your judgment stays in the loop — Claude removes the friction between idea and artifact.</span>
-    </div>
-    <div class="down-hint">↓ before &amp; after numbers</div>
-  </section>
-
-  <!-- 1b — Before / After -->
-  <section class="detail">
-    <h3>Before vs. Now</h3>
-    <div class="ba-grid">
-      <div class="ba-col before">
-        <div class="ba-head">⏱ Before</div>
-        <div class="ba-row"><span class="ba-dot"></span>Merge ESG rating changes (MSCI / Refinitiv) with European returns + analyst coverage from WRDS: <strong>4 hours</strong> of identifier matching</div>
-        <div class="ba-row"><span class="ba-dot"></span>Compute Fama-French 5-factor alphas for a European portfolio, produce a LaTeX table: <strong>3 hours</strong></div>
-        <div class="ba-row"><span class="ba-dot"></span>Write a structured referee report for JF / JFE / RFS: <strong>1–2 days</strong></div>
-        <div class="ba-row"><span class="ba-dot"></span>Summarize a 90-min PhD supervision session into action items: <strong>never done consistently</strong></div>
-        <div class="ba-row"><span class="ba-dot"></span>Add a new working paper to your homepage + update CV in LaTeX: <strong>30–45 minutes</strong> of copy-paste</div>
-      </div>
-      <div class="ba-col after">
-        <div class="ba-head">⚡ Now</div>
-        <div class="ba-row"><span class="ba-dot"></span>Describe the merge logic: <strong>12 minutes</strong></div>
-        <div class="ba-row"><span class="ba-dot"></span>Describe the paper's method: <strong>6 minutes</strong>, compilable LaTeX output</div>
-        <div class="ba-row"><span class="ba-dot"></span>Upload the PDF, run <code>/referee-2</code>: <strong>20 minutes</strong> — you judge, Claude scaffolds</div>
-        <div class="ba-row"><span class="ba-dot"></span>Run <code>/transcribe-meeting</code>: <strong>3 minutes</strong> — decisions, action items, next agenda</div>
-        <div class="ba-row"><span class="ba-dot"></span>Paste the abstract + SSRN link: <strong>90 seconds</strong>, both files updated in sync</div>
-      </div>
-    </div>
-  </section>
-
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     2 · WHAT CHANGED
-══════════════════════════════════════════════════════════ -->
-<section>
-
-  <!-- 2a — Three eras -->
-  <section>
-    <span class="eyebrow">Section 2</span>
-    <h2>Three Eras of AI</h2>
-    <div class="timeline">
-      <div class="tl-card">
-        <div class="tl-year">2022–23</div>
-        <div class="tl-era">Text Era</div>
-        <div class="tl-desc">ChatGPT. It explains. You copy, paste, debug yourself.</div>
-      </div>
-      <div class="tl-card">
-        <div class="tl-year">2024</div>
-        <div class="tl-era">Completion Era</div>
-        <div class="tl-desc">Copilot, Cursor. Autocomplete inside your editor.</div>
-      </div>
-      <div class="tl-card now">
-        <div class="tl-year">2025+ ← we are here</div>
-        <div class="tl-era">Agent Era</div>
-        <div class="tl-desc">Describe a goal. The agent plans, writes, runs, reads errors, and iterates.</div>
-      </div>
-    </div>
-    <ul style="margin-top:0.4em;">
-      <li>The 2024→2025 jump isn't incremental — the agent <em>acts</em>.</li>
-      <li>Reads your files, runs code, checks output, fixes errors. In a loop. Unattended.</li>
-    </ul>
-    <div class="down-hint">↓ AI ladder &amp; tool comparison</div>
-  </section>
-
-  <!-- 2b — AI Ladder -->
-  <section class="detail">
-    <h3>The AI Ladder — Where Are You?</h3>
-    <div class="ai-ladder">
-      <div class="ladder-rung">
-        <div class="ladder-num">0</div>
-        <div><div class="ladder-label">Copy-paste from ChatGPT</div><div class="ladder-desc">Read a response in the browser, manually copy code or text into your work.</div></div>
-      </div>
-      <div class="ladder-rung">
-        <div class="ladder-num">1</div>
-        <div><div class="ladder-label">Chat in Claude.ai or ChatGPT</div><div class="ladder-desc">Conversational Q&amp;A, iterating in the browser. No file access, no code execution.</div></div>
-      </div>
-      <div class="ladder-rung now">
-        <div class="ladder-num">2</div>
-        <div><div class="ladder-label">Single CLI skills — <em>this workshop</em></div><div class="ladder-desc">Claude Code runs a single goal: reads your files, executes code, saves output. You review.</div></div>
-      </div>
-      <div class="ladder-rung">
-        <div class="ladder-num">3</div>
-        <div><div class="ladder-label">Multi-step agents</div><div class="ladder-desc">Chain of tasks: pull WRDS data → clean → run regressions → write results → commit to Git. One instruction.</div></div>
-      </div>
-      <div class="ladder-rung">
-        <div class="ladder-num">4</div>
-        <div><div class="ladder-label">Multi-agent orchestration</div><div class="ladder-desc">Parallel specialists: one fetches Compustat, another reviews the code, a third drafts the paper section.</div></div>
-      </div>
-      <div class="ladder-rung">
-        <div class="ladder-num">5</div>
-        <div><div class="ladder-label">Autonomous pipelines</div><div class="ladder-desc">Scheduled, unattended agents: nightly ESG data pulls, automatic robustness checks, draft updates on new releases.</div></div>
-      </div>
-    </div>
-    <div class="callout tip" style="margin-top:0.3em;">
-      <span class="callout-icon">📍</span>
-      <span>Most researchers gain the most productivity at <strong>Level 2–3</strong>. Levels 4–5 require DevOps infrastructure — worth it for systematic literature reviews or ongoing data production.</span>
-    </div>
-  </section>
-
-  <!-- 2c — Comparison table -->
-  <section class="detail">
-    <h3>Three CLI Tools at a Glance</h3>
-    <table style="font-size:0.46em;">
-      <thead><tr><th></th><th>Claude Code (Anthropic)</th><th>Codex CLI (OpenAI)</th><th>Gemini CLI (Google)</th></tr></thead>
-      <tbody>
-        <tr><td>Models</td><td>Haiku 4.5 / Sonnet 4.6 / Opus 4.7</td><td>o4-mini / o3</td><td>Gemini 2.5 Flash / Gemini 3 / 3.1 Pro</td></tr>
-        <tr><td>Context window</td><td>200K tokens</td><td>128K tokens</td><td><strong style="color:#34d399">1M tokens</strong></td></tr>
-        <tr><td>Runs locally</td><td><strong style="color:#34d399">Yes</strong> — reads &amp; writes your files</td><td><strong style="color:#34d399">Yes</strong> — CLI + cloud exec for parallel tasks</td><td><strong style="color:#34d399">Yes</strong> — CLI on your machine</td></tr>
-        <tr><td>Memory file</td><td><code>CLAUDE.md</code></td><td><code>AGENTS.md</code></td><td><code>GEMINI.md</code></td></tr>
-        <tr><td>Plans</td><td>Pro $20 / Max $100 / Max $200 (20×)</td><td>Free / Plus $20 / Pro $100–200</td><td>Free / AI Pro $20 / AI Ultra $250</td></tr>
-        <tr><td>Best for</td><td>Long files, local data, research pipelines</td><td>Rapid async code generation</td><td>Largest context, multimodal (PDFs, audio)</td></tr>
-      </tbody>
-    </table>
-    <div class="callout tip" style="margin-top:0.35em;">
-      <span class="callout-icon">🛡</span>
-      <span>All three CLIs share the same install pattern: <code>npm install -g &lt;package&gt;</code>, authenticate via browser, run from your project folder. The <code>/skill-name</code> shortcuts in the demos are Claude Code-specific.</span>
-    </div>
-  </section>
-
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     3 · CORE CONCEPTS
-══════════════════════════════════════════════════════════ -->
-<section>
-
-  <!-- 3a — Overview (new order: Agents → CLAUDE.md → Plan Mode → Models → Context → Limits) -->
-  <section>
-    <span class="eyebrow">Section 3</span>
-    <h2>Six Things to Know</h2>
-    <div class="concept-grid">
-      <div class="concept-item">
-        <div class="concept-letter">A</div>
-        <div><div class="concept-name">Tools &amp; Agents</div><div class="concept-sub">What is an agent, exactly?</div></div>
-      </div>
-      <div class="concept-item">
-        <div class="concept-letter">B</div>
-        <div><div class="concept-name">CLAUDE.md</div><div class="concept-sub">Giving the agent memory</div></div>
-      </div>
-      <div class="concept-item">
-        <div class="concept-letter">C</div>
-        <div><div class="concept-name">Plan Mode</div><div class="concept-sub">Preview steps before executing</div></div>
-      </div>
-      <div class="concept-item">
-        <div class="concept-letter">D</div>
-        <div><div class="concept-name">Models &amp; Effort</div><div class="concept-sub">Pick the right model for the task</div></div>
-      </div>
-      <div class="concept-item">
-        <div class="concept-letter">E</div>
-        <div><div class="concept-name">Context Windows</div><div class="concept-sub">How much the agent can "see"</div></div>
-      </div>
-      <div class="concept-item">
-        <div class="concept-letter">F</div>
-        <div><div class="concept-name">Plan Limits</div><div class="concept-sub">Your subscription quota, not tokens</div></div>
-      </div>
-    </div>
-    <div class="down-hint">↓ scroll through each concept</div>
-  </section>
-
-  <!-- 3b — A: Tools & Agents -->
-  <section class="detail">
-    <h3>A · Tools &amp; Agents</h3>
-    <ul>
-      <li>Claude Code has <strong>tools</strong>: read file, write file, run shell command, search web.</li>
-      <li>An <strong>agent</strong> = model + tools + loop. It calls tools, reads results, decides the next step — without you driving each step.</li>
-    </ul>
-    <div class="flow">
-      <div class="fn">You</div>
-      <span class="fa">→</span>
-      <div class="fn agent">Agent</div>
-      <span class="fa">→</span>
-      <div class="fn tool">read_file</div>
-      <span class="fa">→</span>
-      <div class="fn agent">Agent</div>
-      <span class="fa">→</span>
-      <div class="fn tool">run_code</div>
-      <span class="fa">→</span>
-      <div class="fn agent">Agent</div>
-      <span class="fa">→</span>
-      <div class="fn">Result</div>
-    </div>
-    <p style="font-size:0.45em; color:var(--muted); margin:0.3em 0 0.15em;">Under the hood — the <strong style="color:var(--accent);">ReAct loop</strong> (Reason + Act):</p>
-    <div class="flow">
-      <div class="fn agent">Think</div>
-      <span class="fa">→</span>
-      <div class="fn tool">Act</div>
-      <span class="fa">→</span>
-      <div class="fn tool">Observe</div>
-      <span class="fa">→</span>
-      <div class="fn agent">Respond</div>
-      <span class="fa" style="color:#a78bfa;">↺ loop</span>
-    </div>
-    <ul style="margin-top:0.2em;">
-      <li>Three interfaces, one model. The CLI and Desktop App (via MCP) can read and run code in your local files. The web interface works in Claude's own sandboxed environment.</li>
-      <li><strong>Skills</strong> are shareable instruction sets invoked with a slash: <code>/review</code>, <code>/init</code>. Use <code>/resume</code> to continue a previous session. Anyone can author a skill.</li>
-    </ul>
-  </section>
-
-  <!-- 3c — B: CLAUDE.md -->
-  <section class="detail">
-    <h3>B · CLAUDE.md — Giving the Agent Memory</h3>
-    <div class="mem-grid">
-      <div class="mem-card">
-        <div class="mem-head">CLAUDE.md → Claude Code</div>
-        <div class="mem-body">Created with <code>claude init</code>. Place in project root. Claude reads it automatically at the start of every session.</div>
-      </div>
-      <div class="mem-card">
-        <div class="mem-head">AGENTS.md → OpenAI Agents / Codex</div>
-        <div class="mem-body">Same concept, different filename. Used by OpenAI's agent-based tools. The approach is identical — put your project context here.</div>
-      </div>
-    </div>
-    <div class="code-wrap">
-      <pre><code class="language-plaintext"># My Research Project
-
-## Data
-- Source: WRDS / Compustat annual, 1990–2023
-- Key file: data/compustat_clean.csv
-
-## Conventions
-- Python only · Save all tables to results/ · Always print N before/after filters</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="callout tip">
-      <span class="callout-icon">💡</span>
-      <span>Think of <code>CLAUDE.md</code> as the methods section of your paper, written for an AI. If you'd explain it to a new PhD student, put it here.</span>
-    </div>
-  </section>
-
-  <!-- 3d — C: Plan Mode -->
-  <section class="detail">
-    <h3>C · Permission &amp; Plan Modes</h3>
-    <table style="font-size:0.43em; margin-top:0.3em;">
-      <thead><tr><th>Mode</th><th>How to activate</th><th>What happens</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><strong>Default</strong> (safe)</td>
-          <td><code>claude</code></td>
-          <td>Claude asks before every file write, shell command, network call.</td>
-        </tr>
-        <tr>
-          <td><strong>Plan first</strong></td>
-          <td>CLI: <code>claude --plan "..."</code><br>Web/Desktop: toggle Plan mode in UI</td>
-          <td>Proposes full plan, waits for approval before executing anything.</td>
-        </tr>
-        <tr>
-          <td><strong>Auto-approve</strong> ⚡</td>
-          <td><code>claude --dangerously-skip-permissions</code></td>
-          <td>All permissions pre-approved. Zero interruptions. Only in sandboxed repos.</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="callout tip" style="margin-top:0.3em;">
-      <span class="callout-icon">💡</span>
-      <span><code>--plan</code> is a CLI startup flag — start a fresh session in plan mode. Inside a running session, just ask Claude to "show me what you would do first". In the <strong>web and Desktop apps</strong>, click the Plan-mode toggle in the input bar.</span>
-    </div>
-    <div class="callout warn" style="margin-top:0.25em;">
-      <span class="callout-icon">⚠️</span>
-      <span><code>--dangerously-skip-permissions</code> lets Claude write any file and run any command. Use only in a <strong>Docker devcontainer</strong> or a <strong>fresh git worktree on a clean branch</strong>. Never on a bare host with your home directory in scope.</span>
-    </div>
-  </section>
-
-  <!-- 3e — D: Models & Effort -->
-  <section class="detail">
-    <h3>D · Models &amp; Effort</h3>
-    <table>
-      <thead><tr><th>Model</th><th>Speed</th><th>Cost</th><th>Best for</th></tr></thead>
-      <tbody>
-        <tr><td>Claude Haiku 4.5</td><td>Fast</td><td>Cheap</td><td>Bulk formatting, quick lookups</td></tr>
-        <tr><td>Claude Sonnet 4.6</td><td>Balanced</td><td>Mid</td><td>Most research tasks — <strong>workshop default</strong></td></tr>
-        <tr><td>Claude Opus 4.7</td><td>Slow</td><td>High</td><td>Complex, ambiguous problems</td></tr>
-        <tr><td>o3 (Codex)</td><td>Slow</td><td>High</td><td>Complex reasoning tasks (Codex default)</td></tr>
-        <tr><td>o4-mini (Codex)</td><td>Very fast</td><td>Low</td><td>Rapid iteration, agentic coding, high usage limits</td></tr>
-      </tbody>
-    </table>
-    <div class="callout tip" style="margin-top:0.4em;">
-      <span class="callout-icon">🧠</span>
-      <span><strong>Extended thinking:</strong> Claude Opus can reason harder before answering. For a standard regression: unnecessary. For a novel identification strategy: worth the cost.</span>
-    </div>
-  </section>
-
-  <!-- 3f — E: Context Windows -->
-  <section class="detail">
-    <h3>E · Context Windows</h3>
-    <ul>
-      <li>The context window is how much the model holds in memory at once — like RAM, not storage.</li>
-      <li>Claude Sonnet 4.6: <strong>200K tokens</strong> ≈ a full PhD dissertation in one session.</li>
-      <li>Each conversation starts fresh. Use <code>CLAUDE.md</code> to carry over project knowledge.</li>
-      <li>Run <code>/compact</code> to summarise prior context and continue, or <code>/clear</code> to reset fully — useful when the window fills mid-task.</li>
-    </ul>
-    <div class="callout warn" style="margin-top:0.4em;">
-      <span class="callout-icon">⚠️</span>
-      <span>Hit "context length exceeded"? Break the task into smaller steps or run <code>/clear</code> and summarise prior results into <code>CLAUDE.md</code>. <strong>Claude Pro</strong> triggers a cooldown after heavy use (up to <strong>5 hours</strong>).</span>
-    </div>
-    <div class="callout tip" style="margin-top:0.3em;">
-      <span class="callout-icon">📊</span>
-      <span><strong>See usage in real time.</strong> The CLI status bar can show context %, rate-limit cooldown, and session tokens. Run <strong>/statusline-setup</strong> in Claude Code CLI to configure it.</span>
-    </div>
-  </section>
-
-  <!-- 3g — F: Plan Limits -->
-  <section class="detail">
-    <h3>F · Plan Limits &amp; Usage Quotas</h3>
-    <div class="plan-grid">
-      <div class="plan-pill">
-        <div class="pp-name">Claude Free</div>
-        <div class="pp-price">Free</div>
-        <div class="pp-desc">Limited messages per day. Haiku model only. Good for exploring.</div>
-      </div>
-      <div class="plan-pill star">
-        <div class="pp-name">Claude Pro ★ workshop default</div>
-        <div class="pp-price">~$20/month</div>
-        <div class="pp-desc">Sonnet + Opus access. Heavy use triggers cooldown (up to 5h).</div>
-      </div>
-      <div class="plan-pill">
-        <div class="pp-name">Claude Max (5×)</div>
-        <div class="pp-price">~$100/month</div>
-        <div class="pp-desc">5× the Pro quota. For long coding sessions and automated pipelines.</div>
-      </div>
-      <div class="plan-pill">
-        <div class="pp-name">Claude Max (20×)</div>
-        <div class="pp-price">~$200/month</div>
-        <div class="pp-desc">20× the Pro quota. Overnight pipelines, large replication packages, unattended agents. Equivalent to ChatGPT Pro ($200).</div>
-      </div>
-      <div class="plan-pill">
-        <div class="pp-name">API (pay-per-use)</div>
-        <div class="pp-price">Per token, no message caps</div>
-        <div class="pp-desc">Best for running scripts overnight. Set a spending limit first.</div>
-      </div>
-    </div>
-    <div class="callout tip" style="margin-top:0.4em;">
-      <span class="callout-icon">📊</span>
-      <span>Check your live usage at <a href="https://claude.ai/settings/usage" target="_blank" style="color:var(--accent);">claude.ai/settings/usage</a>. &nbsp;·&nbsp; <strong>API users:</strong> set a monthly spending cap in the Anthropic Console before your first session — $5–10 covers this workshop.</span>
-    </div>
-  </section>
-
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     4 · SKILLS — STANDING ON OTHERS' SHOULDERS
-══════════════════════════════════════════════════════════ -->
-<section>
-
-  <!-- 5a — Main -->
-  <section>
-    <span class="eyebrow">Section 4</span>
-    <h2>Skills: Standing on Others' Shoulders</h2>
-    <ul class="large">
-      <li>A <strong>skill</strong> is a markdown file with structured instructions — shareable, version-controlled, community-built.</li>
-      <li>Scott Cunningham (<em>Causal Inference: The Mixtape</em>) built a full economist toolkit: <a href="https://github.com/scunning1975/mixtapetools" target="_blank">mixtapetools</a></li>
-      <li>Pull any skill into your project. Invoke with <code>/skill-name</code>.</li>
-    </ul>
-    <div class="callout tip" style="margin-top:0.5em;">
-      <span class="callout-icon">🎨</span>
-      <span>Skills in mixtapetools: <strong>beautiful-deck</strong> (Beamer slides from your results), <strong>referee-2</strong> (structured 5-part code audit), <strong>blindspot</strong> (surfaces overlooked problems in your analysis).</span>
-    </div>
-    <div class="callout warn" style="margin-top:0.35em;">
-      <span class="callout-icon">⚠️</span>
-      <span><strong>Security note:</strong> A skill is a markdown file containing instructions that Claude executes with full access to your machine. <strong>Only pull skills from sources you trust.</strong> A crafted skill file can read sensitive data or run arbitrary commands — treat it like executable code, not just text.</span>
-    </div>
-    <div class="down-hint">↓ how to pull and invoke</div>
-  </section>
-
-  <!-- 5b — Detail: pull and invoke -->
-  <section class="detail">
-    <h3>Pulling a Skill from mixtapetools</h3>
-    <div class="code-wrap">
-      <pre><code class="language-bash"># 1 · Create the skills directory in your project
-mkdir -p .claude/skills
-
-# 2 · Pull the beautiful-deck skill from Scott Cunningham's repo
-curl -o .claude/skills/beautiful-deck.md \
-  https://raw.githubusercontent.com/scunning1975/mixtapetools/main/skills/beautiful-deck.md
-
-# 3 · Start Claude Code and invoke it
-claude
-> /beautiful-deck</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="demo-result">✓ The agent reads the skill instructions, inspects your results folder, and generates a Beamer (LaTeX) presentation — slides ready to compile with pdflatex. A skill is just a markdown file with structured prompts anyone can author and share.</div>
-    <div class="callout tip" style="margin-top:0.35em;">
-      <span class="callout-icon">🔗</span>
-      <span>Browse all skills: <a href="https://github.com/scunning1975/mixtapetools" target="_blank">github.com/scunning1975/mixtapetools</a> — and write your own for your team's recurring tasks (e.g., <code>/wrds-pull</code>, <code>/robustness-check</code>).</span>
-    </div>
-  </section>
-
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     5 · LIVE DEMOS
-══════════════════════════════════════════════════════════ -->
-<section>
-
-  <!-- 6a — Overview -->
-  <section>
-    <span class="eyebrow">Section 5</span>
-    <h2>Live Demos</h2>
-    <p style="font-size:0.48em; color:var(--accent); font-weight:700; margin:0.3em 0 0.1em; letter-spacing:0.04em;">RESEARCH</p>
-    <ul>
-      <li><strong>Demo 1</strong> — Write a referee report with <code>/referee-2</code> + references check</li>
-      <li><strong>Demo 2</strong> — Plan an R&amp;R response with <code>/strategic-revision</code></li>
-      <li><strong>Demo 3</strong> — Generate a conference slide deck with <code>/beautiful-deck</code></li>
-      <li><strong>Demo 4</strong> — Replicate Stata analysis in Python &amp; R</li>
-    </ul>
-    <p style="font-size:0.48em; color:var(--accent); font-weight:700; margin:0.4em 0 0.1em; letter-spacing:0.04em;">TEACHING &amp; ADMIN</p>
-    <ul>
-      <li><strong>Demo 5</strong> — Build your academic homepage from CV</li>
-      <li><strong>Demo 6</strong> — Transcribe a student meeting with <code>/transcribe-meeting</code></li>
-      <li><strong>Demo 7</strong> — Build interactive teaching tools</li>
-    </ul>
-    <div class="callout tip" style="margin-top:0.5em;">
-      <span class="callout-icon">🛠</span>
-      <span>Skills used: <strong>referee-2</strong>, <strong>beautiful-deck</strong> (from <a href="https://github.com/scunning1975/mixtapetools" target="_blank">mixtapetools</a>); <strong>strategic-revision</strong> (from <a href="https://github.com/jusi-aalto/strategic-revision" target="_blank">jusi-aalto</a>); <strong>transcribe-meeting</strong> (from <a href="https://github.com/tchew86/transcribe-meeting" target="_blank">tchew86</a>).</span>
-    </div>
-    <div class="down-hint">↓ commands for each demo</div>
-  </section>
-
-  <!-- 6b — Demo 1: Referee Report -->
-  <section class="detail">
-    <h3><span class="demo-badge">1</span> Referee Report with <code>/referee-2</code></h3>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.15em 0 0.1em;">Step 1 — pull the skill once:</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">git clone https://github.com/scunning1975/mixtapetools \
-  .claude/skills/mixtapetools</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.25em 0 0.1em;">Step 2 — run against the paper:</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">claude "I need to review this paper: paper.pdf
-/referee-2
-After the structured report, also scan the bibliography:
-flag any references where the year or journal name looks incorrect,
-and list any key papers in this literature that are missing."</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="demo-result">
-      <span>✓</span>
-      <span>Claude produces a 5-part structured report (contribution, methodology, data, results, recommendation) plus a reference audit — what used to take a morning now takes 20 minutes. You judge; Claude scaffolds the structure.</span>
-    </div>
-    <div class="callout tip" style="margin-top:0.3em;">
-      <span class="callout-icon">🔗</span>
-      <span>See also <a href="https://coarse.ink/" target="_blank" style="color:var(--accent);">coarse.ink</a> — a dedicated web tool for AI-assisted peer review.</span>
-    </div>
-  </section>
-
-  <!-- 6c — Demo 2: Strategic Revision -->
-  <section class="detail">
-    <h3><span class="demo-badge">2</span> Plan Your R&amp;R Response with <code>/strategic-revision</code></h3>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.15em 0 0.1em;">Step 1 — pull the skill once:</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">git clone https://github.com/jusi-aalto/strategic-revision \
-  .claude/skills/strategic-revision</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.25em 0 0.1em;">Step 2 — feed it the reviewer reports + your manuscript:</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">claude "Manuscript: paper.pdf
-Reviews: editor-and-reviewer-comments.pdf
-/strategic-revision
-Output the revision plan to output/."</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="demo-result">
-      <span>✓</span>
-      <span>Six phases: every reviewer comment → an atomic task with verbatim quote → classified (empirical / argumentative / structural) → dependency DAG → NetworkX validates acyclicity → parallelizable batches A–E with reviewer-conflict flags. The output is a checklist you can hand to a co-author.</span>
-    </div>
-  </section>
-
-  <!-- 6d — Demo 3: Slide Deck from Paper -->
-  <section class="detail">
-    <h3><span class="demo-badge">3</span> Slide Deck from Paper with <code>/beautiful-deck</code></h3>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.15em 0 0.1em;">Step 1 — pull the skill once:</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">curl -o .claude/skills/beautiful-deck.md \
-  https://raw.githubusercontent.com/scunning1975/mixtapetools/main/skills/beautiful-deck.md</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.25em 0 0.1em;">Step 2 — generate the conference presentation:</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">claude "Here is my working paper: paper.pdf
-/beautiful-deck
-Target audience: finance conference (EFA / AFA style).
-12 slides maximum. Include motivation, data, key table, main figure, conclusion."</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="demo-result">
-      <span>✓</span>
-      <span>Claude reads the paper, structures 12 Beamer slides with logical narrative flow, and writes compilable LaTeX — a <code>.tex</code> file ready for <code>pdflatex</code>. Replace copy-pasting from the paper with a single command.</span>
-    </div>
-  </section>
-
-  <!-- 6e — Demo 4: Code Replication -->
-  <section class="detail">
-    <h3><span class="demo-badge">4</span> Replicate Stata Analysis in Python &amp; R</h3>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.15em 0 0.1em;">Give Claude your Stata code and let it handle the translation:</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">claude "I have Stata code in analysis.do running factor regressions.
-Replicate the full analysis in Python (pandas + statsmodels) and R (tidyverse + fixest):
-  (1) Match sample selection and variable construction exactly
-  (2) Reproduce all tables — same column order, same significance stars
-  (3) Flag any Stata-specific syntax that required a workaround
-Then run /beautiful-deck to turn the comparison into presentation slides."</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="demo-result">
-      <span>✓</span>
-      <span>Three-language replication in one session. Claude traces Stata syntax to Python/R equivalents, flags divergences, and hands off to /beautiful-deck for the final slides — useful for journal replication requirements and teaching cross-language workflows.</span>
-    </div>
-  </section>
-
-  <!-- 6f — Demo 5: Homepage from CV -->
-  <section class="detail">
-    <h3><span class="demo-badge">5</span> Build Your Academic Homepage from CV</h3>
-    <div class="code-wrap">
-      <pre><code class="language-bash">claude "Create a clean academic homepage from cv.pdf.
-Sections: About, Research (working papers + publications), Teaching, Contact.
-Minimal HTML, no frameworks. Output: index.html"</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="demo-result">
-      <span>✓</span>
-      <span>Claude reads your CV PDF, extracts structured data, and writes a deployable <code>index.html</code>. 90 seconds vs 30–45 minutes of copy-paste.</span>
-    </div>
-  </section>
-
-  <!-- 6g — Demo 6: Meeting Transcript -->
-  <section class="detail">
-    <h3><span class="demo-badge">6</span> Transcribe a Meeting &amp; Produce a Structured Summary</h3>
-    <div class="code-wrap">
-      <pre><code class="language-bash">git clone https://github.com/tchew86/transcribe-meeting \
-  .claude/skills/transcribe-meeting
-claude
-&gt; /transcribe-meeting meeting.m4a</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <p style="font-size:0.48em; color:var(--muted); margin:0.25em 0 0.2em;">The skill produces a structured summary with:</p>
-    <ul style="margin-top:0;">
-      <li>Key decisions made — numbered list</li>
-      <li>Action items: who is responsible, what, by when</li>
-      <li>Open questions that still need resolving</li>
-      <li>Suggested agenda items for the next meeting</li>
-    </ul>
-    <div class="callout tip" style="margin-top:0.3em;">
-      <span class="callout-icon">🔒</span>
-      <span><strong>Fully local — no cloud.</strong> <strong>Whisper</strong> transcribes the audio, <strong>Ollama</strong> (local LLM) writes the summary. Your recording never leaves the machine.</span>
-    </div>
-  </section>
-
-  <!-- 6j — Demo 7: Interactive Teaching Tools -->
-  <section class="detail">
-    <h3><span class="demo-badge">7</span> Build Interactive Teaching Tools</h3>
-    <p style="font-size:0.44em; color:var(--muted); margin:0.15em 0 0.1em;">Single-prompt build — no prior coding knowledge needed:</p>
-    <div class="code-wrap">
-      <pre><code class="language-bash">claude "Build a student mock-exam interface for a financial markets course.
-Use Google Apps Script + Google Sheets as the database. Features:
-  - One question at a time, multiple choice, 90-second timer
-  - Running score + instant feedback after each answer
-  - All submissions logged to a Sheet; admin view shows live results
-Deploy as a Google Apps Script Web App."</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="demo-result">
-      <span>✓</span>
-      <span>Claude writes the Apps Script + HTML, wires it to a Google Sheet, and gives you a deployable web app URL. Same approach powers student trading competitions and text-analysis games — no server to manage, submissions stored automatically.</span>
-    </div>
-    <div class="callout tip" style="margin-top:0.3em;">
-      <span class="callout-icon">🔗</span>
-      <span>Live examples: <a href="https://tinyurl.com/usemafmock" target="_blank">mock exam</a> (admin pw: <em>mads</em>) &nbsp;·&nbsp; <a href="https://tinyurl.com/volatrading2026" target="_blank">trading competition</a> &nbsp;·&nbsp; <a href="https://tinyurl.com/usetextasdata" target="_blank">text-as-data game</a></span>
-    </div>
-  </section>
-
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     6 · YOUR TURN
-══════════════════════════════════════════════════════════ -->
-<section>
-
-  <!-- 6a — Main -->
-  <section>
-    <span class="eyebrow">Section 6</span>
-    <h2>Your Turn</h2>
-    <div class="prompt-grid">
-      <div class="prompt-card">
-        <div class="prompt-head">A · Analyse data</div>
-        <div class="prompt-body">I have [YOUR_FILE.csv]…<br>I want to know [question].<br>Please: describe, test,<br>visualise, interpret.</div>
-      </div>
-      <div class="prompt-card">
-        <div class="prompt-head">B · Automate a task</div>
-        <div class="prompt-body">I have [N] files in a folder…<br>Write a script that<br>[combines / extracts]<br>and saves to output.csv.</div>
-      </div>
-      <div class="prompt-card">
-        <div class="prompt-head">C · Build to show</div>
-        <div class="prompt-body">Create a webpage for<br>[topic] using data from<br>[source]. Suitable for<br>students or a conference.</div>
-      </div>
-    </div>
-    <div class="down-hint">↓ full templates, troubleshooting &amp; takeaways</div>
-  </section>
-
-  <!-- 6b — Full prompt templates -->
-  <section class="detail">
-    <h3>Starter Prompt Templates</h3>
-    <div class="code-wrap" style="margin-bottom:0.3em;">
-      <pre><code class="language-text">I have a dataset called [YOUR_FILE.csv] with columns [describe].
-I want to know [research question].
-Please:
-  (1) describe the data: rows, columns, missing values
-  (2) run an appropriate statistical test
-  (3) visualise the key result as a chart
-  (4) write a 3-sentence interpretation suitable for a paper</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-    <div class="code-wrap">
-      <pre><code class="language-text">I have [N] Excel/CSV files in a folder, each containing [describe structure].
-Write a script that [combines / extracts / calculates / formats] them
-and saves the result to output.csv.</code></pre>
-      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    </div>
-  </section>
-
-  <!-- 6c — Troubleshooting -->
-  <section class="detail">
-    <h3>Troubleshooting</h3>
-    <table>
-      <thead><tr><th>What you see</th><th>What to do</th></tr></thead>
-      <tbody>
-        <tr><td>"Not reading my file"</td><td>Check directory: run <code>pwd</code> and compare to where the file lives</td></tr>
-        <tr><td>"Installed unexpected packages"</td><td>Normal — Claude manages dependencies. Review with <code>pip list</code></td></tr>
-        <tr><td>"Running in a loop"</td><td>Press <kbd>Ctrl+C</kbd> to interrupt · Use <code>--plan</code> next time</td></tr>
-        <tr><td>"Context length exceeded"</td><td>Break into steps · Summarise prior work into <code>CLAUDE.md</code></td></tr>
-        <tr><td>"Rate limited / cooldown"</td><td>Wait up to 5h, or switch to API access with a token budget</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- 6d — Takeaways -->
-  <section class="detail">
-    <h3>Take-Home Checklist</h3>
-    <ul class="checklist" id="takeaway-list">
-      <li><span class="check-box"></span>Create <code>CLAUDE.md</code> in every research project — run <code>claude init</code></li>
-      <li><span class="check-box"></span>Use <code>--plan</code> before any operation that touches shared files</li>
-      <li><span class="check-box"></span>Ask Claude to explain its own code: "Walk me through what that script does"</li>
-      <li><span class="check-box"></span>Use Claude.ai Projects for cross-session memory when working in the browser</li>
-      <li><span class="check-box"></span>Set a monthly spending cap in the Anthropic Console before using an API key</li>
-    </ul>
-  </section>
-
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     FINAL
-══════════════════════════════════════════════════════════ -->
-<section class="title-slide title-bg">
-  <img src="assets/images/Finance.png" class="title-logo" alt="Finance @ Utrecht University">
-  <h1 style="font-size:1.75em;">Start building.</h1>
-  <div class="title-sub">These slides live at <strong>uufinance.github.io/agents</strong></div>
-  <div class="title-meta">
-    All commands and templates are one <kbd>↓</kbd> away on any section slide.<br>
-    Press <kbd>O</kbd> to browse the full deck.
+<section id="two-workflows">
+  <span class="eyebrow">01 · Start with a task</span>
+  <h2>One task, two workflows</h2>
+  <p class="request">“Check this dataset and make a reproducible figure.”</p>
+  <div class="grid two">
+    <div class="card"><span class="label">Conversation led</span><h3>You carry the work between turns</h3><ul class="compact"><li>Ask for an approach or code.</li><li>Copy, run and inspect it.</li><li>Bring errors back to the conversation.</li></ul></div>
+    <div class="card gold"><span class="label">Agent led</span><h3>The system works in the project</h3><ul class="compact"><li>Give a goal and a workspace.</li><li>It inspects, edits, runs and checks.</li><li>You review the files and evidence.</li></ul></div>
   </div>
-  <div style="margin-top:1em; font-size:0.38em; color:var(--muted); line-height:1.7;">
-    <a href="https://www.linkedin.com/company/finance-utrecht/" target="_blank"
-       style="display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#0a0900; text-decoration:none; border-radius:8px; padding:6px 16px; font-weight:700; font-size:1.15em; margin-bottom:0.6em; box-shadow:0 3px 12px rgba(245,184,0,0.35); letter-spacing:0.01em;">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="#0a0900"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      Finance @ Utrecht University
-    </a><br>
-    <strong style="color:var(--accent);">Inspired by &amp; built on the work of:</strong><br>
-    Scott Cunningham — <a href="https://github.com/scunning1975/mixtapetools" target="_blank" style="color:var(--accent);">github.com/scunning1975/mixtapetools</a><br>
-    Mihail Velikov — <a href="https://github.com/velikov-mihail/edhec-master-class" target="_blank" style="color:var(--accent);">github.com/velikov-mihail/edhec-master-class</a><br>
-    Jukka Sihvonen — <a href="https://github.com/jusi-aalto/strategic-revision" target="_blank" style="color:var(--accent);">github.com/jusi-aalto/strategic-revision</a>
-  </div>
+  <div class="bar soft">Both need your research judgment. The amount of work delegated changes.</div>
+  <aside class="notes">1:00–5:00 (4 minutes). Ask who has copied AI-generated code into Stata, R or Python. Walk through one error-and-retry cycle. These are two workflows, not a rigid classification of products. A chat application may support the second workflow too. Neither establishes scientific correctness.</aside>
 </section>
 
-</div><!-- /slides -->
-</div><!-- /reveal -->
+<section id="agentic-workflow">
+  <span class="eyebrow">02 · A working definition</span>
+  <h2>What makes a workflow agentic?</h2>
+  <div class="grid three">
+    <div class="card"><div class="big-number">01</div><h3>A goal</h3><p>A result to work toward, with a clear stopping point.</p></div>
+    <div class="card"><div class="big-number">02</div><h3>Tools</h3><p>Ways to inspect or act on files, software and services.</p></div>
+    <div class="card gold"><div class="big-number">03</div><h3>Feedback</h3><p>Results and errors that shape the next action.</p></div>
+  </div>
+  <div class="steps" aria-label="Inspect, act, observe, revise"><div class="step">Inspect</div><div class="step">Act</div><div class="step">Observe</div><div class="step active">Revise ↺</div></div>
+  <p class="small muted" style="margin-top:24px">You set the goal, scope and point at which to stop or ask.</p>
+  <p class="source">Reading: <a href="https://code.claude.com/docs/en/how-claude-code-works">How Claude Code works</a></p>
+  <aside class="notes">5:00–8:00 (3 minutes). A code snippet in a response is not itself the full action-and-feedback loop. The model proposes actions and the surrounding software executes permitted tools and returns results. Use a failing script as the example: read error, inspect the relevant line, edit, rerun.</aside>
+</section>
 
-<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<section id="chat-is-an-interface">
+  <span class="eyebrow">03 · Interface and capability</span>
+  <h2>A chat box can contain an agent</h2>
+  <p class="lead">The interface tells you how you interact.<br>The tools and workflow tell you what it can do.</p>
+  <div class="grid three" style="margin-top:30px">
+    <div class="card"><h3>Inspect?</h3><p>Can it read the project and find relevant files?</p></div>
+    <div class="card"><h3>Act?</h3><p>Can it edit files and run the required software?</p></div>
+    <div class="card gold"><h3>Continue?</h3><p>Can it use the results to decide its next step?</p></div>
+  </div>
+  <div class="bar soft">Browser · Desktop app · Code editor · Terminal</div>
+  <p class="source">Examples across interfaces: <a href="https://code.claude.com/docs/en/overview">Claude Code</a> · <a href="https://developers.openai.com/api/docs/guides/code-generation">Codex</a></p>
+  <aside class="notes">8:00–10:00 (2 minutes). Correct the common misconception that browser chat cannot use files or run code. Chat is an interaction style; an agent can use that interface. A terminal does not imply a local model, and a browser does not determine where all tools execute.</aside>
+</section>
+
+<section id="delegation">
+  <span class="eyebrow">04 · Choose the working mode</span>
+  <h2>Decide how much work to delegate</h2>
+  <div class="grid three">
+    <div class="card"><span class="label">Explain</span><h3>Understand a step</h3><p>“What does this regression command do?”</p></div>
+    <div class="card"><span class="label">Plan</span><h3>Review the approach</h3><p>“Inspect this project and propose a replication plan.”</p></div>
+    <div class="card gold"><span class="label">Execute</span><h3>Produce and check</h3><p>“Implement the agreed plan and show the checks.”</p></div>
+  </div>
+  <div class="bar">The same application may support all three.</div>
+  <p class="small muted" style="margin-top:24px">For an unfamiliar task, inspect the proposed approach before execution.</p>
+  <aside class="notes">10:00–12:00 (2 minutes). These are modes of working, not fixed product tiers. Demonstrate the distinction with a replication task. You can steer an agent while it works. A prompt asking it to plan is useful, but the enforcement of a product's plan mode depends on that product.</aside>
+</section>
+
+<section id="model-and-harness">
+  <span class="eyebrow">05 · The central idea</span>
+  <h2>Coding agent = model + harness</h2>
+  <div class="harness">
+    <div class="harness-title"><strong>The harness</strong><span class="small muted">Software that manages the work</span></div>
+    <div class="model-row">
+      <div class="model-box"><h3>Model</h3><p>Interprets the request.<br>Writes code.<br>Proposes the next action.</p></div>
+      <div class="arrow" aria-label="tool calls and results">⇄</div>
+      <div class="card"><h3>Tools + environment</h3><p>Read and change files.<br>Run commands.<br>Return results and errors.</p></div>
+    </div>
+    <div class="harness-tags"><span>Context &amp; instructions</span><span>Action / feedback loop</span><span>Permissions &amp; review</span></div>
+  </div>
+  <p class="small muted" style="margin-top:22px">Changing the model and changing the harness can both change the result.</p>
+  <p class="source">Definitions: <a href="https://code.claude.com/docs/en/how-claude-code-works">Anthropic: model and harness</a> · <a href="https://developers.openai.com/api/docs/guides/agents-api/architecture">OpenAI: harness and environment</a></p>
+  <aside class="notes">12:00–15:00 (3 minutes). Explain harness in ordinary terms: software around the model that supplies context, routes tool calls, manages the session, and applies controls. The model does not directly edit a file; a tool performs the edit. Model families are different from agent products. The same model can be deployed in different harnesses. This is a teaching diagram, not a claim that every implementation has identical components.</aside>
+</section>
+
+<section id="harness-components">
+  <span class="eyebrow">06 · What the harness provides</span>
+  <h2>Four things to look for</h2>
+  <div class="grid four review-grid">
+    <div class="card"><h3>Context</h3><p>Relevant files, project instructions and earlier results.</p></div>
+    <div class="card"><h3>Tools</h3><p>Search, file editing, shell commands and connected services.</p></div>
+    <div class="card"><h3>Environment</h3><p>The files and software where commands actually run.</p></div>
+    <div class="card gold"><h3>Control</h3><p>Access boundaries, approvals and changes you can inspect.</p></div>
+  </div>
+  <div class="bar soft">Available in the project ≠ already read into the model’s context.</div>
+  <aside class="notes">15:00–17:00 (2 minutes). Context has limits and may be summarized as work continues. A large context window does not mean every project file has been read or will be remembered verbatim. Point out that Stata, R or Python must actually be available in the execution environment; a model knowing syntax is not enough.</aside>
+</section>
+
+<section id="instructions-skills-tools">
+  <span class="eyebrow">07 · Make good workflows reusable</span>
+  <h2>Instructions, skills and connections</h2>
+  <table>
+    <thead><tr><th>What it provides</th><th>Research example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Project instructions</strong><br><span class="small muted">e.g. AGENTS.md / CLAUDE.md</span></td><td>Use this folder structure.<br>Document every sample exclusion.</td></tr>
+      <tr><td><strong>Skills</strong><br><span class="small muted">Reusable instructions and resources</span></td><td>A repeatable workflow for checking references or producing figures.</td></tr>
+      <tr><td><strong>MCP connections</strong><br><span class="small muted">A standard for connecting tools and data</span></td><td>Access an approved repository, document store or database tool.</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted" style="margin-top:22px">Support and naming vary. Instructions and tools operate within the available permissions.</p>
+  <p class="source"><a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Project instructions</a> · <a href="https://agentskills.io/home">Agent Skills standard</a> · <a href="https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro">MCP introduction</a></p>
+  <aside class="notes">17:00–19:00 (2 minutes). Project instructions do not retrain the model. Skills may bundle scripts, templates and other resources; they are not inherently CLI-only. MCP standardizes the connection to a tool; it does not make the service trustworthy or grant arbitrary access. Review third-party instructions and code before installing them.</aside>
+</section>
+
+<section id="working-cycle">
+  <span class="eyebrow">08 · A practical workflow</span>
+  <h2>Give the work a beginning and an end</h2>
+  <div class="steps">
+    <div class="step active"><span class="n">01</span>Define</div><div class="step"><span class="n">02</span>Inspect</div><div class="step"><span class="n">03</span>Plan</div><div class="step"><span class="n">04</span>Change</div><div class="step"><span class="n">05</span>Run</div><div class="step active"><span class="n">06</span>Verify</div><div class="step"><span class="n">07</span>Report</div>
+  </div>
+  <div class="grid two" style="margin-top:32px">
+    <div class="card gold"><h3>Before the work</h3><p>Define the question, inputs, constraints and evidence of completion.</p></div>
+    <div class="card gold"><h3>Before using the result</h3><p>Review the changes, assumptions, checks and unresolved issues.</p></div>
+  </div>
+  <div class="bar soft">A failed check sends the work back to inspection or revision.</div>
+  <aside class="notes">19:00–22:00 (3 minutes). This is a recommended research workflow, not a fixed algorithm every agent follows. Human judgment matters throughout, especially defining the question and reviewing evidence. Use a merge as the running example: count keys before and after, investigate duplicate rows, correct and rerun.</aside>
+</section>
+
+<section id="task-brief">
+  <span class="eyebrow">09 · A brief the agent can check</span>
+  <h2>State the task and the evidence</h2>
+  <div class="task-brief">
+    <p><mark>Input</mark> Inspect this synthetic firm-year dataset. Report columns, missing values and duplicate firm-year keys.</p>
+    <p><mark>Goal</mark> Plot the yearly median of firm-level ROA, calculated as 100 × net income / year-end total assets.</p>
+    <p><mark>Constraints</mark> Use positive assets and non-missing inputs. Report exclusions. Keep the input file unchanged.</p>
+    <p><mark>Completion</mark> Save the figure, summary table and run instructions. Run the script and show what you checked.</p>
+  </div>
+  <p class="small muted" style="margin-top:22px">For a real study, you supply the justified variable definitions and sample rules.</p>
+  <aside class="notes">22:00–25:00 (3 minutes). Read the four pieces of the brief. The requested ratio uses contemporaneous total assets as a simple teaching definition; many real research designs use other definitions. Do not let the agent silently choose winsorization, identification, filters or missing-value treatment. The demo has no regression or causal claim.</aside>
+</section>
+
+<section id="review-evidence">
+  <span class="eyebrow">10 · Review what actually happened</span>
+  <h2>Ask for evidence you can inspect</h2>
+  <div class="grid four review-grid">
+    <div class="card"><h3>What changed?</h3><p>Read the file diff and inspect the generated artifacts.</p></div>
+    <div class="card"><h3>What ran?</h3><p>Check the command, its output and the run instructions.</p></div>
+    <div class="card"><h3>What was checked?</h3><p>Look at counts, keys, units and a manual calculation.</p></div>
+    <div class="card gold"><h3>What remains uncertain?</h3><p>Read the assumptions, limitations and unfinished checks.</p></div>
+  </div>
+  <div class="bar">Code that runs can still answer the wrong research question.</div>
+  <aside class="notes">25:00–27:00 (2 minutes). A fluent delivery message is not evidence that a check ran. Open the actual result. An explanation of code is helpful, but does not independently verify its correctness. Review the sample and meaning of variables, not only syntax or a green test result.</aside>
+</section>
+
+<section id="research-workflows">
+  <span class="eyebrow">11 · Research applications</span>
+  <h2>Useful tasks have visible checks</h2>
+  <table>
+    <thead><tr><th>Delegate</th><th>Check</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Clean and merge data</strong></td><td>Keys, units, duplicated rows and lost observations.</td></tr>
+      <tr><td><strong>Reproduce a table or figure</strong></td><td>Samples, variable definitions, estimates and labels.</td></tr>
+      <tr><td><strong>Translate Stata ↔ R ↔ Python</strong></td><td>Defaults, missing values, standard errors and numerical differences.</td></tr>
+    </tbody>
+  </table>
+  <div class="bar soft">Keep the research decision visible in the task, code and documentation.</div>
+  <aside class="notes">27:00–30:00 (3 minutes). Use examples relevant to finance researchers. Coding agents can help with identifier mapping, replication scripts and documentation, but a successful merge may still be economically wrong. Cross-language replication requires matching defaults, sample rules and estimation choices. Avoid promising fixed time savings.</aside>
+</section>
+
+<section id="teaching">
+  <span class="eyebrow">12 · Teaching and communication</span>
+  <h2>Code can produce things people use</h2>
+  <div class="grid three">
+    <div class="card"><span class="label">Teaching</span><h3>Make a model interactive</h3><p>A bond-pricing exercise with sliders, explanations and feedback.</p></div>
+    <div class="card"><span class="label">Communication</span><h3>Update a research homepage</h3><p>Turn a CV and publication list into a maintained website.</p></div>
+    <div class="card gold"><span class="label">Materials</span><h3>Package a useful artifact</h3><p>A figure, teaching dataset or documented replication folder.</p></div>
+  </div>
+  <div class="bar soft">Review the calculations, accessibility and information made public.</div>
+  <aside class="notes">30:00–32:00 (2 minutes). These are illustrative use cases. The agent can create source files and use available tools to preview them. Publishing, connecting accounts and collecting student data require appropriate review and access. Avoid showing privileged controls or credentials in examples.</aside>
+</section>
+
+<section id="convincing-errors">
+  <span class="eyebrow">13 · Common failure modes</span>
+  <h2>Errors can look convincing</h2>
+  <div class="grid four review-grid">
+    <div class="card"><h3>A merge duplicates rows</h3><p>Check key uniqueness and row counts before and after.</p></div>
+    <div class="card"><h3>A ratio uses the wrong denominator</h3><p>Trace the definition and calculate one observation yourself.</p></div>
+    <div class="card"><h3>A figure hides excluded years</h3><p>Inspect the plotted table and explain every exclusion.</p></div>
+    <div class="card gold"><h3>A citation points to another paper</h3><p>Open the source and verify its bibliographic details.</p></div>
+  </div>
+  <p class="small muted" style="margin-top:24px">Match the check to the error that would matter for your task.</p>
+  <aside class="notes">32:00–34:00 (2 minutes). Ask for one example of a plausible-looking error the audience has encountered. The value of an agent's execution loop is that checks can be run and repeated; the researcher must choose meaningful checks. Another model agreeing is not the same as verifying against data or a source.</aside>
+</section>
+
+<section id="where-work-happens">
+  <span class="eyebrow">14 · Know where your data goes</span>
+  <h2>Execution and model processing are separate</h2>
+  <div class="grid two">
+    <div class="card"><span class="label">Where do tools run?</span><h3>The working environment</h3><p>Your computer, a remote machine or a hosted sandbox.</p></div>
+    <div class="card gold"><span class="label">Where is input processed?</span><h3>The model service</h3><p>A hosted provider, or a local model if the system is configured for one.</p></div>
+  </div>
+  <div class="bar">Local execution can still send file excerpts and tool results to a hosted model.</div>
+  <p class="small muted" style="margin-top:24px">Check the configured service, account terms and institutional rules before using restricted data.</p>
+  <p class="source">Example data flow and account-dependent policies: <a href="https://code.claude.com/docs/en/data-usage">Claude Code data usage</a></p>
+  <aside class="notes">34:00–36:00 (2 minutes). Separate the interface, the execution environment and the inference service. Running a Python script locally does not establish that the surrounding agent session stays local. Training use, retention and external tool access are separate questions. Use synthetic or approved data for an initial trial.</aside>
+</section>
+
+<section id="bounded-workspace">
+  <span class="eyebrow">15 · Control the scope</span>
+  <h2>Use a bounded workspace</h2>
+  <div class="grid two">
+    <div class="card"><span class="label">Sandbox</span><h3>What can commands access?</h3><p>Technical limits on files, network access and other resources.</p></div>
+    <div class="card gold"><span class="label">Approval policy</span><h3>When does the work pause?</h3><p>Rules that decide which actions need authorization.</p></div>
+  </div>
+  <ul class="compact" style="margin-top:28px"><li>Start with a project copy or branch and scoped access.</li><li>Keep raw data recoverable; inspect changes before sharing.</li><li>Review instructions from downloaded files, skills and websites.</li></ul>
+  <p class="source">Technical boundaries and approvals: <a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing</a> · <a href="https://learn.chatgpt.com/docs/agent-approvals-security">Agent approvals and security</a></p>
+  <aside class="notes">36:00–38:00 (2 minutes). A branch or worktree helps recover code changes; it is not a security sandbox. A text request to preserve raw data is useful guidance, while filesystem permissions enforce an access boundary. Defaults vary. Explain prompt injection simply: a file or webpage can contain instructions that try to redirect the agent away from your task.</aside>
+</section>
+
+<section id="choose-a-tool">
+  <span class="eyebrow">16 · Start with your task</span>
+  <h2>Choose a tool you can work with and review</h2>
+  <ul>
+    <li>Does it work with your project files and required software?</li>
+    <li>Can you inspect its actions, changes and results?</li>
+    <li>Does its data handling fit the task?</li>
+    <li>Can you control access and recover changes?</li>
+  </ul>
+  <div class="bar soft">Examples: Claude Code · Codex · Gemini CLI · GitHub Copilot</div>
+  <p class="small muted" style="margin-top:22px">Available models, features and limits change. Use the current <a href="#/setup">setup links</a>.</p>
+  <aside class="notes">38:00–39:00 (1 minute). These are examples, not a ranking or an exhaustive list. Model selection is separate from tool selection. Start with a supported tool you can access and a task small enough to inspect. Pricing and model-version comparisons belong in current documentation, not the core talk.</aside>
+</section>
+
+<section id="watch-the-demo">
+  <span class="eyebrow">17 · Bring the concepts together</span>
+  <h2>What to watch in the demo</h2>
+  <div class="grid three">
+    <div class="card"><h3>What does the model decide?</h3><p>The next step, proposed code and interpretation of results.</p></div>
+    <div class="card"><h3>What does the harness enable?</h3><p>Reading files, running code and returning feedback.</p></div>
+    <div class="card gold"><h3>What do we still judge?</h3><p>The definitions, sample rules and adequacy of the checks.</p></div>
+  </div>
+  <div class="deliverables"><span>Reproducible script</span><span>Figure</span><span>Sample audit</span><span>Run instructions</span></div>
+  <aside class="notes">39:00–40:00 (1 minute). Conclude the presentation and move to the 10-minute demo. Ask the audience to follow the distinction between model, harness and researcher. The reference package provides a fallback if the live run is slow. It must be labelled as a prepared example when used.</aside>
+</section>
+
+<section id="demo">
+  <span class="eyebrow">Live demo · 40:00–50:00</span>
+  <h2>From a dataset to a checked figure</h2>
+  <p class="lead">One task. One workspace. One agent.</p>
+  <div class="grid two" style="margin-top:24px">
+    <div class="card"><h3>The input</h3><p>A <strong>synthetic</strong> firm-year dataset.<br>Net income and total assets.<br><a href="assets/compustat_sample.csv" download>Download the CSV</a></p></div>
+    <div class="card gold"><h3>The result</h3><p>Yearly median ROA (%), a reproducible script and an explicit sample audit.</p></div>
+  </div>
+  <div class="steps"><div class="step"><span class="n">1 MIN</span>Brief</div><div class="step"><span class="n">2 MIN</span>Inspect</div><div class="step"><span class="n">3 MIN</span>Build / run</div><div class="step"><span class="n">2 MIN</span>Check / revise</div><div class="step active"><span class="n">2 MIN</span>Review</div></div>
+  <p class="small" style="margin-top:20px"><a href="#/demo-resources">Prompt, presenter guide and prepared fallback →</a></p>
+  <aside class="notes">40:00–50:00 (10 minutes). Open a fresh prepared workspace with only the synthetic CSV and the prompt. No installation during the demo. Show the brief (1 min), inspection and plan (2), creation and execution (3), checks and a directed revision such as improving a caption (2), review actual files and run instructions (2). Reference outputs live in demo/reference/outputs/. If the live run stalls, clearly say you are switching to a previously run example. Do not imply the prepared output was produced live.</aside>
+</section>
+
+<section id="questions" class="qa">
+  <span class="eyebrow">Q&amp;A · 50:00–60:00</span>
+  <h1>Where would this help<br>in your work?</h1>
+  <p class="lead">A repetitive task · A difficult handoff<br>An output you need to verify</p>
+  <p class="small" style="margin-top:36px"><a href="https://usefinance.github.io/agents/">usefinance.github.io/agents</a></p>
+  <p class="tiny"><a href="#/sources">Sources</a> &nbsp;·&nbsp; <a href="#/setup">Getting started</a> &nbsp;·&nbsp; <a href="#/demo-resources">Demo files</a></p>
+  <aside class="notes">50:00–60:00 (10 minutes). Reserve the full time. Invite concrete tasks and discuss the input, access required, expected artifact and how to check it. The presentation ends here. The following slides are optional references for questions or later use.</aside>
+</section>
+
+<!-- Optional reference material. Not part of the 40-minute presentation. -->
+<section id="sources" class="appendix">
+  <span class="eyebrow">Reference · Sources checked 23 September 2026</span>
+  <h2>Read more about the concepts</h2>
+  <div class="grid two">
+    <div class="card"><h3>Models, harnesses and data</h3><ul class="links"><li><a href="https://code.claude.com/docs/en/how-claude-code-works">How Claude Code works</a></li><li><a href="https://developers.openai.com/api/docs/guides/agents-api/architecture">OpenAI: harness and environment</a></li><li><a href="https://code.claude.com/docs/en/data-usage">Claude Code data flow</a></li><li><a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing and approvals</a></li></ul></div>
+    <div class="card"><h3>Instructions and tools</h3><ul class="links"><li><a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">AGENTS.md instructions</a></li><li><a href="https://agentskills.io/home">Agent Skills standard</a></li><li><a href="https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro">Model Context Protocol</a></li><li><a href="https://geminicli.com/docs/reference/tools/">Gemini CLI tools</a></li></ul></div>
+  </div>
+  <p class="small muted" style="margin-top:22px">The diagrams and research examples are teaching aids. Check current documentation for product-specific behavior.</p>
+  <aside class="notes">Reference slide, outside the timed talk. These primary sources underpin the definitions and current corrections. Product behavior can vary by version, account, configuration and organization policy.</aside>
+</section>
+
+<section id="setup" class="appendix">
+  <span class="eyebrow">Reference · Getting started</span>
+  <h2>Pick one tool and a small project</h2>
+  <table class="reference-table">
+    <thead><tr><th>Example</th><th>Official starting point</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Claude Code</strong></td><td><a href="https://code.claude.com/docs/en/overview">Interfaces and installation</a> · <a href="https://code.claude.com/docs/en/permission-modes">Permission modes</a></td></tr>
+      <tr><td><strong>Codex</strong></td><td><a href="https://learn.chatgpt.com/docs">Documentation and setup</a> · <a href="https://learn.chatgpt.com/docs/build-skills">Skills</a></td></tr>
+      <tr><td><strong>Gemini CLI</strong></td><td><a href="https://geminicli.com/docs/">Installation and quickstart</a> · <a href="https://geminicli.com/docs/reference/tools/">Available tools</a></td></tr>
+      <tr><td><strong>GitHub Copilot</strong></td><td><a href="https://docs.github.com/en/copilot/get-started/about-github-copilot">Capabilities and access</a> · <a href="https://docs.github.com/en/copilot/get-started/quickstart-for-using-github-copilot-in-your-ide">IDE quickstart</a></td></tr>
+    </tbody>
+  </table>
+  <div class="bar soft">Try: inspect a small synthetic dataset, propose a plan, then produce one checked artifact.</div>
+  <p class="small muted" style="margin-top:18px">Confirm your account access, required software and usage limits before starting.</p>
+  <aside class="notes">Optional setup reference. Follow current official documentation rather than copying outdated install commands. Access to a free chat account does not necessarily include the associated coding agent. Subscription quotas and API billing are separate arrangements.</aside>
+</section>
+
+<section id="prompt-template" class="appendix">
+  <span class="eyebrow">Reference · Copyable prompt</span>
+  <h2>A reusable task brief</h2>
+  <div class="code-wrap"><pre><code id="general-prompt">Goal: [the result I need]
+Inputs: [files, definitions and relevant documentation]
+
+First inspect the inputs and propose a short plan.
+Use these rules: [sample, methods, software, output formats].
+Keep these files unchanged: [raw inputs].
+Save the results to: [output directory].
+
+Run the work. Check: [counts, keys, units, known examples].
+Report the changed files, commands run, checks performed,
+assumptions and anything that remains unresolved.
+Include instructions so I can reproduce the result.</code></pre>
+    <button class="copy-btn" data-copy="general-prompt" aria-live="polite">Copy prompt</button>
+  </div>
+  <aside class="notes">Reference only. Replace each bracketed item with a concrete instruction. Verification requirements should reflect the errors that would matter for the specific task. Avoid asking the agent to choose an unspecified statistical test and immediately write a publication-ready interpretation.</aside>
+</section>
+
+<section id="demo-resources" class="appendix">
+  <span class="eyebrow">Reference · The 10-minute demo</span>
+  <h2>Live brief and prepared fallback</h2>
+  <div class="grid two">
+    <div class="card"><h3>Run the demo</h3><ul class="links"><li><a href="assets/compustat_sample.csv" download>Synthetic dataset (CSV)</a></li><li><a href="demo/prompt.txt">Copyable demo prompt</a></li><li><a href="https://github.com/usefinance/agents/blob/main/demo/README.md">Presenter guide and timings</a></li></ul></div>
+    <div class="card gold"><h3>Prepared example</h3><ul class="links"><li><a href="demo/reference/outputs/yearly_roa.svg">Example figure</a></li><li><a href="demo/reference/outputs/yearly_roa.csv">Yearly summary table</a></li><li><a href="https://github.com/usefinance/agents/tree/main/demo/reference">Script, audit and run instructions</a></li></ul></div>
+  </div>
+  <p class="small muted" style="margin-top:24px">Use a fresh demo folder. Keep the reference implementation separate. If you switch to the prepared result, tell the audience.</p>
+  <aside class="notes">Reference only. The prepared script runs using the Python standard library. See the presenter README for the exact command and expected audit totals. All data are synthetic; no inference about actual companies is warranted.</aside>
+</section>
+
+<section id="more-workflows" class="appendix">
+  <span class="eyebrow">Reference · Try another workflow</span>
+  <h2>Choose one output you can inspect</h2>
+  <table class="reference-table">
+    <thead><tr><th>Task</th><th>Useful completion evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Combine a folder of CSV files</td><td>Input manifest, row counts, duplicate check and repeatable script.</td></tr>
+      <tr><td>Reproduce a figure from a paper</td><td>Documented sample, definitions, plotted data and comparison.</td></tr>
+      <tr><td>Update a research homepage</td><td>Preview, checked links and a review of the information published.</td></tr>
+      <tr><td>Build an interactive teaching example</td><td>Known numerical cases, clear units and accessible controls.</td></tr>
+    </tbody>
+  </table>
+  <p class="small" style="margin-top:28px"><a href="https://github.com/usefinance/agents">Source repository</a> &nbsp;·&nbsp; <a href="https://github.com/tchew86/agents/tree/1787a07f94df9b6109a3f1aad057efbb18887c5f">Preserved original workshop</a></p>
+  <p class="tiny muted">Earlier workshop inspiration: <a href="https://github.com/scunning1975/mixtapetools">Scott Cunningham</a> · <a href="https://github.com/velikov-mihail/edhec-master-class">Mihail Velikov</a> · <a href="https://github.com/jusi-aalto/strategic-revision">Jukka Sihvonen</a></p>
+  <aside class="notes">End of reference material. The prior workshop remains preserved in a fork at the original commit. This updated presentation retains the Utrecht identity and generalizes the core concepts across agents.</aside>
+</section>
+
+</div></div>
+<div class="deck-footer"><a href="#/welcome">USE Finance</a><span class="sep">/</span>Coding agents for researchers<span class="sep">·</span><a href="#/questions">Q&amp;A</a><span class="sep">·</span><a href="#/sources">References</a><span class="sep">·</span><button id="overview-button" type="button">Overview</button><span class="sep">·</span><button id="notes-button" type="button">Speaker notes</button></div>
+<script src="assets/vendor/reveal/reveal.js"></script>
+<script src="assets/vendor/reveal/notes.js"></script>
 <script>
-Reveal.initialize({
-  hash: true,
-  controls: true,
-  controlsTutorial: true,
-  progress: true,
-  slideNumber: 'c/t',
-  center: true,
-  transition: 'slide',
-  transitionSpeed: 'fast',
-  backgroundTransition: 'fade',
-  width: 1200,
-  height: 700,
-  margin: 0,
-  minScale: 0.2,
-  maxScale: 2.0,
-});
-
-hljs.highlightAll();
-
-function copyCode(btn) {
-  const pre = btn.closest('.code-wrap').querySelector('pre');
-  // Remove any injected hljs spans to get clean text
-  const text = pre.innerText || pre.textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'Copied!';
-    btn.classList.add('ok');
-    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 2000);
-  }).catch(() => {});
-}
-
-// Overview mode: shift grid to eliminate blank space at top-left.
-// Reveal.js centers the overview on the current slide, which places the entire
-// grid in the lower-right quadrant when starting from slide (0,0). This hook
-// fires after Reveal finishes setup (setTimeout 120ms), reads the actual screen
-// position of the first slide, and shifts the grid so it starts near (20, 20).
-// Math: Δscreen = totalScale × Δtranslate, where totalScale = product of all
-// scale() factors (e.g. 1.2 presentation × 0.2 overview = 0.24).
-Reveal.on('overviewshown', () => {
-  setTimeout(() => {
-    const slides = document.querySelector('.reveal .slides');
-    const t = slides.style.transform || '';
-    const firstSlide = slides.querySelector('section');
-    if (!firstSlide) return;
-    const { left, top } = firstSlide.getBoundingClientRect();
-    const pad = 20;
-    const dxScreen = pad - left;
-    const dyScreen = pad - top;
-    const allScales = [...t.matchAll(/scale\(([\d.]+)\)/g)].map(m => parseFloat(m[1]));
-    const totalScale = allScales.reduce((a, b) => a * b, 1) || 1;
-    slides.style.transform = t
-      .replace(/translateX\(([-\d.]+)px\)/, (_, x) => `translateX(${+x + dxScreen / totalScale}px)`)
-      .replace(/translateY\(([-\d.]+)px\)/, (_, y) => `translateY(${+y + dyScreen / totalScale}px)`);
-  }, 120);
-});
-
-// Clickable checklist items
-document.querySelectorAll('.checklist li').forEach(li => {
-  li.addEventListener('click', () => {
-    li.classList.toggle('done');
-    li.querySelector('.check-box').textContent = li.classList.contains('done') ? '✓' : '';
+  Reveal.initialize({
+    hash:true, controls:true, controlsTutorial:true, progress:true,
+    slideNumber:"c/t", center:false, width:1200, height:700,
+    margin:0.025, minScale:0.15, maxScale:2,
+    transition:"fade", transitionSpeed:"fast", backgroundTransition:"none",
+    plugins:[RevealNotes]
   });
-});
-
+  document.getElementById("overview-button").addEventListener("click", function() {
+    Reveal.toggleOverview();
+  });
+  document.getElementById("notes-button").addEventListener("click", function() {
+    Reveal.getPlugin("notes").open();
+  });
+  document.querySelectorAll("[data-copy]").forEach(function(button) {
+    button.addEventListener("click", async function() {
+      var text = document.getElementById(button.dataset.copy).textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = "Copied!";
+      } catch (error) {
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(document.getElementById(button.dataset.copy));
+        selection.removeAllRanges();
+        selection.addRange(range);
+        button.textContent = "Text selected — press Ctrl/Cmd+C";
+      }
+    });
+  });
 </script>
 </body>
 </html>

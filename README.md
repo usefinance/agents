@@ -1,39 +1,94 @@
-# Claude Code Workshop — AI Coding Agents for Researchers
+# Coding Agents for Researchers — USE Finance
 
-A 60-minute hands-on workshop for researchers at the Utrecht School of Economics. No programming experience required.
+A presentation for researchers at Utrecht School of Economics:
+**40 minutes of presentation, 10 minutes of live demonstration, and 10 minutes of Q&A.**
+No live installation is required to attend.
 
-**Live slide deck:** https://uufinance.github.io/agents/
+**Live slides:** https://usefinance.github.io/agents/
 
-## What this workshop covers
+The opening slide has a QR code linking to the live deck, with matching frames
+for the QR at the top left and the Finance Utrecht logo at the top right.
 
-Claude Code is an AI coding agent that runs in your terminal, reads your files, writes and executes code, and iterates — without you driving every step. This workshop shows researchers how to use it for:
+## What the talk covers
 
-- **Research workflows** — referee reports, R&R revision plans, conference slide decks, cross-language code replication (Stata → Python + R)
-- **Teaching & admin** — building academic homepages from a CV, transcribing student meetings, creating interactive exam and competition tools
-- **Concepts** — how AI agents work (ReAct loop, tools, memory), plan mode, permission levels, context windows, usage limits
+- Chat as an interface, and the capabilities that make a workflow agentic.
+- Coding agents as a model working inside a harness with context, tools,
+  an execution environment and controls.
+- A practical cycle: define, inspect, plan, change, run, verify and report.
+- Project instructions, reusable skills and MCP connections.
+- Research, teaching and communication examples, with concrete checks.
+- Execution location, model processing, access boundaries and approvals.
 
-## Repo contents
+The core sequence has 18 slides. Slide 19 is the live demo and slide 20 is Q&A.
+Five reference slides follow, with sources, current setup links, prompt templates,
+demo resources and additional use cases. Product documentation was reviewed on
+23 September 2026; model rankings, fixed prices and performance promises are
+intentionally omitted from the teaching material.
 
-```
-agents/
-├── index.html              # Full slide deck (single HTML file, no build step)
-├── assets/
-│   └── compustat_sample.csv  # Synthetic Compustat extract for live demos
-└── .claude/
-    └── skills/
-        └── transcribe-meeting.md  # Local skill used in Demo 6
-```
+## Presenting and viewing locally
 
-## View locally
+Run a local web server from the repository root:
 
-```bash
-npx serve .
-# or
-python3 -m http.server 8000
-```
+    python -m http.server 8000
 
-Open `http://localhost:8000`.
+Use python3 if that is the Python command on your system, then open
+http://localhost:8000.
 
-## Demo data
+- Arrow keys or Space: navigate.
+- O: overview.
+- S: presenter view, including slide timings and notes.
+- F: fullscreen.
+- The footer links directly to Q&A and references.
 
-`assets/compustat_sample.csv` — 725 synthetic firm-year observations from 25 European firms (1995–2023). Columns match a real WRDS/Compustat annual pull: `gvkey`, `conm`, `fyear`, `ni`, `at`, `rect`, `invt`, `dpc`, `oancf`. Used in the live demos; participants can download it directly from the workshop site.
+The deck uses the existing Reveal.js 4.6.1 runtime, now included locally along
+with its notes plugin and MIT license. Fonts use the system font stack. Slides,
+images and reference demo outputs load without a CDN or font service; external
+resource links still need an internet connection. Speaker view needs a local
+server or the hosted site and may require allowing a popup.
+
+## Live demonstration
+
+The demo creates a reproducible yearly median ROA figure from the synthetic
+firm-year CSV already included in this repository. ROA is explicitly defined as
+100 × net income / year-end total assets for this teaching example.
+
+- [Presenter guide](demo/README.md): the ten-minute run sheet and review questions.
+- [Demo prompt](demo/prompt.txt): a copyable task brief.
+- [Reference script](demo/reference/analyze.py): uses only Python's standard library.
+- [Prepared chart](demo/reference/outputs/yearly_roa.svg).
+- [Prepared table](demo/reference/outputs/yearly_roa.csv).
+- [Diagnostics](demo/reference/outputs/diagnostics.json) and
+  [methods note](demo/reference/outputs/methods.md).
+
+Run the fallback from the repository root:
+
+    python demo/reference/analyze.py
+
+The live demo should begin from the dataset and prompt in a fresh folder. The
+reference implementation is a separately labelled fallback, not material for the
+live agent to copy. No package installation is needed for the reference script.
+
+## Repository contents
+
+    index.html                         Slide deck, styles and presenter notes
+    assets/compustat_sample.csv         Original synthetic teaching data
+    assets/images/Finance.png           Original Utrecht Finance logo
+    assets/images/slides-qr.svg         QR for the public presentation URL
+    assets/vendor/reveal/               Pinned runtime and license
+    demo/README.md                     Presenter instructions
+    demo/prompt.txt                    Live task brief
+    demo/reference/                    Executable fallback and checked outputs
+
+## Preserved original
+
+Before the update, the original repository was forked to
+https://github.com/tchew86/agents.
+
+The original main commit is
+[1787a07f94df9b6109a3f1aad057efbb18887c5f](https://github.com/tchew86/agents/tree/1787a07f94df9b6109a3f1aad057efbb18887c5f).
+The fork and that commit preserve the earlier Claude Code workshop.
+
+Earlier workshop inspiration: Scott Cunningham's
+[mixtapetools](https://github.com/scunning1975/mixtapetools), Mihail Velikov's
+[master class](https://github.com/velikov-mihail/edhec-master-class), and Jukka
+Sihvonen's [strategic-revision](https://github.com/jusi-aalto/strategic-revision).

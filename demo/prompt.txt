@@ -1,0 +1,23 @@
+Create a small reproducible analysis of assets/compustat_sample.csv.
+This is synthetic teaching data. Preserve the raw file and put all new work
+under demo/live/. Work from the dataset and these instructions without
+reading demo/reference/.
+
+1. Inspect the columns, row count, unique firms, fiscal-year range,
+   duplicate firm-years, and missing values. Stop and ask if identifiers
+   are invalid or firm-years are duplicated.
+2. Define ROA as 100 * ni / at, using year-end total assets and reporting
+   percent. Keep negative income. Exclude only rows where ni or at is
+   missing, not numeric, or not finite, or where at <= 0. Do not drop rows
+   just because another column is missing. Do not impute or winsorize.
+3. Use Python's standard library only. Write and execute a reusable script.
+   Create a CSV of each year's row count, valid sample size, exclusions,
+   and median firm-level ROA; an SVG line chart using those same medians;
+   a diagnostics file; and a short methods note. Label the data synthetic.
+4. Check row counts, unique keys, exclusion counts, and the agreement
+   between chart and table. Confirm the raw data did not change.
+5. Show me the outputs, commands you ran, and the files you changed.
+   Explain assumptions and limitations. Do not make causal claims.
+
+Before editing, give me a brief plan and identify any choices that need
+my judgment. Then carry out the specified analysis.
