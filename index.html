@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Coding agents for researchers: models, harnesses, tools and reproducible workflows. A 40-minute presentation, 10-minute demonstration and 10-minute Q&A.">
-  <title>Coding Agents for Researchers — USE Finance</title>
+  <meta name="description" content="Beyond chat: what coding agents can do for research, teaching and thesis work, and how to review their results and actions.">
+  <title>Beyond Chat: Coding Agents in Research and Teaching — Finance @ U.S.E.</title>
   <link rel="stylesheet" href="assets/vendor/reveal/reveal.css">
   <style>
     :root { --gold:#ffcd00; --ink:#19180f; --muted:#625e4b; --paper:#fffdf5; --panel:#fff7d4; --line:#dfd7b4; --teal:#086b61; --red:#a32127; }
@@ -104,6 +104,50 @@
     .task-brief mark { color:inherit; background:#fff0a8; padding:0 4px; }
     .deliverables { display:flex; gap:12px; flex-wrap:wrap; margin-top:22px; }
     .deliverables span { font-size:19px; padding:10px 16px; background:#edf6f1; border:1px solid #bdd6cb; border-radius:8px; }
+    .comparison .card { min-height:260px; }
+    .visual-icon { font-size:54px; line-height:1; color:#806400; margin:8px 0 18px; font-weight:700; }
+    .visual-cards .card { min-height:245px; }
+    .cycle-line { margin-top:32px; padding:20px; background:var(--panel); border-radius:12px; text-align:center; font-size:31px; font-weight:700; }
+    .visual-steps { margin-top:58px; }
+    .visual-steps .step { padding:28px 14px; font-size:28px; }
+    .step-detail { color:var(--muted); font-size:16px; font-weight:400; margin-top:16px; }
+    .big-statement { margin-top:38px; padding:22px 28px; background:var(--panel); border-left:6px solid var(--gold); font-size:31px; font-weight:700; }
+    .capability-grid .card { min-height:186px; }
+    .failure-grid .card { min-height:155px; }
+    .capability-grid .card h3,.failure-grid .card h3 { margin-bottom:8px; }
+    .capability-grid .card .visual-icon,.failure-grid .card .visual-icon { font-size:42px; margin:0 0 8px; }
+    #wrong-results .big-statement { margin-top:25px; padding:16px 26px; font-size:28px; }
+    .risk-diagram { display:grid; grid-template-columns:1.15fr 70px 1fr; gap:18px; align-items:center; margin-top:36px; }
+    .terminal-card { padding:28px 32px; border-radius:14px; background:#24241f; color:#fff; font:25px Consolas,monospace; line-height:1.8; }
+    .terminal-card .label { color:#f6d76b; font:700 15px "Segoe UI",Arial,sans-serif; display:block; margin-bottom:16px; }
+    .terminal-card .danger { color:#ff9999; }
+    .risk-arrow { font-size:54px; color:#8a6e00; text-align:center; }
+    .risk-message { font-size:34px; line-height:1.35; }
+    .safety-tags { display:flex; gap:14px; margin-top:28px; }
+    .safety-tags span { flex:1; text-align:center; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; font-size:21px; font-weight:700; }
+    .use-case-grid { grid-template-columns:.9fr 1.1fr; align-items:center; }
+    .use-case-list > div { padding:14px 0; border-bottom:1px solid var(--line); font-size:25px; }
+    .use-case-list > div strong { color:#917200; margin-right:16px; }
+    .use-case-list p { margin-top:24px; }
+    .figure-card,.exercise-mock { margin:0; background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px; }
+    .figure-card img { display:block; width:100%; height:310px; object-fit:contain; }
+    .figure-card figcaption { font-size:15px; color:var(--muted); text-align:center; margin-top:4px; }
+    .exercise-mock { min-height:336px; }
+    .exercise-mock .label { display:block; color:var(--muted); font-size:16px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .exercise-mock h3 { margin:12px 0 36px; }
+    .mock-slider { display:flex; align-items:center; gap:20px; font-size:22px; }
+    .mock-track { display:block; flex:1; height:9px; background:#e6d48d; border-radius:9px; position:relative; }
+    .mock-track i { position:absolute; left:65%; top:-8px; width:25px; height:25px; border-radius:50%; background:#b58e00; }
+    .mock-answer { margin:25px 0; padding:16px; background:var(--panel); border-radius:9px; font-size:25px; }
+    .mock-answer strong { font-size:35px; }
+    .exercise-mock small { color:var(--muted); }
+    .spectrum .card { min-height:270px; }
+    .spectrum .card p { font-size:21px; }
+    .question-grid .big-number { font-size:37px; }
+    .question-grid .card { min-height:190px; }
+    .takeaway-grid .card { min-height:185px; text-align:center; }
+    .takeaway-grid .card h3 { margin:0; }
+    .demo-links { margin-top:45px; }
     .qa { text-align:center!important; background:var(--gold); }
     .qa h1 { margin-top:95px; font-size:88px; }
     .qa .lead { margin:24px auto; }
@@ -121,8 +165,8 @@
 <body>
 <div class="reveal"><div class="slides">
 
-<!-- 18 main slides / 40 minutes. Presenter timings are in the notes (press S). -->
-<section id="welcome" class="title-slide" aria-label="Coding agents for researchers">
+<!-- 13 core slides / 40 minutes. Presenter timings are in the notes (press S). -->
+<section id="welcome" class="title-slide" aria-label="Beyond chat: coding agents in research and teaching">
   <a class="corner left" href="https://usefinance.github.io/agents/" aria-label="Open the slides; QR code links to this presentation">
     <img src="assets/images/slides-qr.svg" alt="QR code for https://usefinance.github.io/agents/">
   </a>
@@ -132,264 +176,182 @@
   </a>
   <span class="corner-label right">Real-world Finance</span>
   <div class="title-content">
-    <span class="eyebrow">Research · Teaching · Everyday work</span>
-    <h1>Coding agents<br>for researchers</h1>
-    <p>From a question to a reproducible result</p>
+    <span class="eyebrow">Research · Teaching · Thesis work</span>
+    <h1>Beyond chat:<br>coding agents</h1>
+    <p>What they can do—and what still needs us</p>
     <p class="navigation-hint"><kbd>→</kbd> next &nbsp; <kbd>O</kbd> overview &nbsp; <kbd>S</kbd> speaker notes</p>
   </div>
-  <aside class="notes">0:00–1:00 (1 minute). Welcome. This is a presentation and demonstration for researchers. Scan the QR for these slides and the demo files, linked from the reference slides. Programming experience varies; we will focus on directing and checking work. Explain the 40 + 10 + 10 schedule.</aside>
+  <aside class="notes">0:00–2:00 (2 minutes). Welcome researchers and lecturers, including people who have never used AI. Ask for a show of hands: who has used a chat assistant? Who has given AI a task and watched it work on files? The talk is 40 minutes, followed by a 10-minute demo and 10 minutes of questions. The QR links to these slides and demo resources.</aside>
 </section>
 
-<section id="two-workflows">
-  <span class="eyebrow">01 · Start with a task</span>
-  <h2>One task, two workflows</h2>
-  <p class="request">“Check this dataset and make a reproducible figure.”</p>
-  <div class="grid two">
-    <div class="card"><span class="label">Conversation led</span><h3>You carry the work between turns</h3><ul class="compact"><li>Ask for an approach or code.</li><li>Copy, run and inspect it.</li><li>Bring errors back to the conversation.</li></ul></div>
-    <div class="card gold"><span class="label">Agent led</span><h3>The system works in the project</h3><ul class="compact"><li>Give a goal and a workspace.</li><li>It inspects, edits, runs and checks.</li><li>You review the files and evidence.</li></ul></div>
+<section id="beyond-chat">
+  <span class="eyebrow">01 · A familiar task</span>
+  <h2>What changes beyond chat?</h2>
+  <p class="request">“Check these data and make a figure.”</p>
+  <div class="grid two comparison">
+    <div class="card"><span class="label">Conversation</span><div class="visual-icon" aria-hidden="true">☰</div><h3>Advice on screen</h3><p>You copy, run and return with errors.</p></div>
+    <div class="card gold"><span class="label">Agent workflow</span><div class="visual-icon" aria-hidden="true">↻</div><h3>Work in a workspace</h3><p>It inspects, builds, runs and revises.</p></div>
   </div>
-  <div class="bar soft">Both need your research judgment. The amount of work delegated changes.</div>
-  <aside class="notes">1:00–5:00 (4 minutes). Ask who has copied AI-generated code into Stata, R or Python. Walk through one error-and-retry cycle. These are two workflows, not a rigid classification of products. A chat application may support the second workflow too. Neither establishes scientific correctness.</aside>
+  <div class="bar soft">The same chat interface can support either workflow.</div>
+  <aside class="notes">2:00–6:00 (4 minutes). Use the audience’s likely experience: a chatbot suggests Python or Stata code; the person copies it into a project, runs it, finds an error, and pastes the error back. In an agent workflow the system can use tools to inspect and edit project files, run the code, observe the error, and try again. The distinction is the accessible tools and feedback loop, not whether the screen looks like chat. Both require review.</aside>
 </section>
 
-<section id="agentic-workflow">
-  <span class="eyebrow">02 · A working definition</span>
-  <h2>What makes a workflow agentic?</h2>
-  <div class="grid three">
-    <div class="card"><div class="big-number">01</div><h3>A goal</h3><p>A result to work toward, with a clear stopping point.</p></div>
-    <div class="card"><div class="big-number">02</div><h3>Tools</h3><p>Ways to inspect or act on files, software and services.</p></div>
-    <div class="card gold"><div class="big-number">03</div><h3>Feedback</h3><p>Results and errors that shape the next action.</p></div>
+<section id="what-is-agent">
+  <span class="eyebrow">02 · The simple definition</span>
+  <h2>Give a goal. Watch it work.</h2>
+  <div class="grid three visual-cards">
+    <div class="card"><div class="big-number">01</div><h3>Goal</h3><p>A result to produce.</p></div>
+    <div class="card"><div class="big-number">02</div><h3>Tools</h3><p>Ways to inspect and act.</p></div>
+    <div class="card gold"><div class="big-number">03</div><h3>Feedback</h3><p>Results guide the next step.</p></div>
   </div>
-  <div class="steps" aria-label="Inspect, act, observe, revise"><div class="step">Inspect</div><div class="step">Act</div><div class="step">Observe</div><div class="step active">Revise ↺</div></div>
-  <p class="small muted" style="margin-top:24px">You set the goal, scope and point at which to stop or ask.</p>
-  <p class="source">Reading: <a href="https://code.claude.com/docs/en/how-claude-code-works">How Claude Code works</a></p>
-  <aside class="notes">5:00–8:00 (3 minutes). A code snippet in a response is not itself the full action-and-feedback loop. The model proposes actions and the surrounding software executes permitted tools and returns results. Use a failing script as the example: read error, inspect the relevant line, edit, rerun.</aside>
-</section>
-
-<section id="chat-is-an-interface">
-  <span class="eyebrow">03 · Interface and capability</span>
-  <h2>A chat box can contain an agent</h2>
-  <p class="lead">The interface tells you how you interact.<br>The tools and workflow tell you what it can do.</p>
-  <div class="grid three" style="margin-top:30px">
-    <div class="card"><h3>Inspect?</h3><p>Can it read the project and find relevant files?</p></div>
-    <div class="card"><h3>Act?</h3><p>Can it edit files and run the required software?</p></div>
-    <div class="card gold"><h3>Continue?</h3><p>Can it use the results to decide its next step?</p></div>
-  </div>
-  <div class="bar soft">Browser · Desktop app · Code editor · Terminal</div>
-  <p class="source">Examples across interfaces: <a href="https://code.claude.com/docs/en/overview">Claude Code</a> · <a href="https://developers.openai.com/api/docs/guides/code-generation">Codex</a></p>
-  <aside class="notes">8:00–10:00 (2 minutes). Correct the common misconception that browser chat cannot use files or run code. Chat is an interaction style; an agent can use that interface. A terminal does not imply a local model, and a browser does not determine where all tools execute.</aside>
-</section>
-
-<section id="delegation">
-  <span class="eyebrow">04 · Choose the working mode</span>
-  <h2>Decide how much work to delegate</h2>
-  <div class="grid three">
-    <div class="card"><span class="label">Explain</span><h3>Understand a step</h3><p>“What does this regression command do?”</p></div>
-    <div class="card"><span class="label">Plan</span><h3>Review the approach</h3><p>“Inspect this project and propose a replication plan.”</p></div>
-    <div class="card gold"><span class="label">Execute</span><h3>Produce and check</h3><p>“Implement the agreed plan and show the checks.”</p></div>
-  </div>
-  <div class="bar">The same application may support all three.</div>
-  <p class="small muted" style="margin-top:24px">For an unfamiliar task, inspect the proposed approach before execution.</p>
-  <aside class="notes">10:00–12:00 (2 minutes). These are modes of working, not fixed product tiers. Demonstrate the distinction with a replication task. You can steer an agent while it works. A prompt asking it to plan is useful, but the enforcement of a product's plan mode depends on that product.</aside>
+  <div class="cycle-line" aria-label="Goal, tools and feedback form a continuing loop">Goal → action → result → next action ↺</div>
+  <p class="source">See <a href="https://developers.openai.com/api/docs/guides/agents">OpenAI's agent overview</a> for a current description of multi-step tool use.</p>
+  <aside class="notes">6:00–9:00 (3 minutes). Define an agent in ordinary language: software that uses a model and tools to work toward a goal over several steps, using the result of one action to choose the next. It may ask for input or stop at a boundary. A single generated answer, even one containing code, does not show the complete working loop. No claim that all agents are autonomous or share identical access.</aside>
 </section>
 
 <section id="model-and-harness">
-  <span class="eyebrow">05 · The central idea</span>
-  <h2>Coding agent = model + harness</h2>
+  <span class="eyebrow">03 · What makes it possible</span>
+  <h2>Model + harness</h2>
   <div class="harness">
-    <div class="harness-title"><strong>The harness</strong><span class="small muted">Software that manages the work</span></div>
+    <div class="harness-title"><strong>The harness</strong><span class="small muted">Software around the model</span></div>
     <div class="model-row">
-      <div class="model-box"><h3>Model</h3><p>Interprets the request.<br>Writes code.<br>Proposes the next action.</p></div>
-      <div class="arrow" aria-label="tool calls and results">⇄</div>
-      <div class="card"><h3>Tools + environment</h3><p>Read and change files.<br>Run commands.<br>Return results and errors.</p></div>
+      <div class="model-box"><h3>Model</h3><p>Interprets.<br>Proposes.<br>Decides.</p></div>
+      <div class="arrow" aria-label="Tool calls and results">⇄</div>
+      <div class="card"><h3>Tools + workspace</h3><p>Read files.<br>Run software.<br>Return results.</p></div>
     </div>
-    <div class="harness-tags"><span>Context &amp; instructions</span><span>Action / feedback loop</span><span>Permissions &amp; review</span></div>
+    <div class="harness-tags"><span>Context</span><span>Working loop</span><span>Permissions</span></div>
   </div>
-  <p class="small muted" style="margin-top:22px">Changing the model and changing the harness can both change the result.</p>
-  <p class="source">Definitions: <a href="https://code.claude.com/docs/en/how-claude-code-works">Anthropic: model and harness</a> · <a href="https://developers.openai.com/api/docs/guides/agents-api/architecture">OpenAI: harness and environment</a></p>
-  <aside class="notes">12:00–15:00 (3 minutes). Explain harness in ordinary terms: software around the model that supplies context, routes tool calls, manages the session, and applies controls. The model does not directly edit a file; a tool performs the edit. Model families are different from agent products. The same model can be deployed in different harnesses. This is a teaching diagram, not a claim that every implementation has identical components.</aside>
+  <p class="source">Concepts: <a href="https://code.claude.com/docs/en/how-claude-code-works">Anthropic</a> · <a href="https://developers.openai.com/api/docs/guides/agents-api/architecture">OpenAI</a></p>
+  <aside class="notes">9:00–12:00 (3 minutes). The model interprets the request and proposes actions. The harness supplies context, routes tool calls, manages the loop and applies controls. Tools perform file edits and command execution and return outputs to the model. The workspace is the environment the tools can reach. A chat window, code editor or terminal can all present this workflow. Local tool execution does not imply a local model.</aside>
 </section>
 
-<section id="harness-components">
-  <span class="eyebrow">06 · What the harness provides</span>
-  <h2>Four things to look for</h2>
-  <div class="grid four review-grid">
-    <div class="card"><h3>Context</h3><p>Relevant files, project instructions and earlier results.</p></div>
-    <div class="card"><h3>Tools</h3><p>Search, file editing, shell commands and connected services.</p></div>
-    <div class="card"><h3>Environment</h3><p>The files and software where commands actually run.</p></div>
-    <div class="card gold"><h3>Control</h3><p>Access boundaries, approvals and changes you can inspect.</p></div>
+<section id="working-loop">
+  <span class="eyebrow">04 · What a run looks like</span>
+  <h2>One task, several steps</h2>
+  <div class="steps visual-steps" aria-label="Inspect data, create code, run it, then revise">
+    <div class="step"><span class="n">1</span>Inspect<div class="step-detail">CSV + definitions</div></div>
+    <div class="step"><span class="n">2</span>Create<div class="step-detail">Code + figure</div></div>
+    <div class="step"><span class="n">3</span>Run<div class="step-detail">Output + errors</div></div>
+    <div class="step active"><span class="n">4</span>Revise<div class="step-detail">Check + improve</div></div>
   </div>
-  <div class="bar soft">Available in the project ≠ already read into the model’s context.</div>
-  <aside class="notes">15:00–17:00 (2 minutes). Context has limits and may be summarized as work continues. A large context window does not mean every project file has been read or will be remembered verbatim. Point out that Stata, R or Python must actually be available in the execution environment; a model knowing syntax is not enough.</aside>
+  <div class="big-statement">The result of one step changes the next.</div>
+  <aside class="notes">12:00–15:00 (3 minutes). Narrate a realistic run without product UI: the agent reads variable names and a data dictionary, writes a short analysis script, runs it, encounters a missing-value issue, changes the script, reruns it, and reports what it did. It can complete work across steps, yet the researcher still chooses the outcome and checks the definition.</aside>
 </section>
 
-<section id="instructions-skills-tools">
-  <span class="eyebrow">07 · Make good workflows reusable</span>
-  <h2>Instructions, skills and connections</h2>
-  <table>
-    <thead><tr><th>What it provides</th><th>Research example</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Project instructions</strong><br><span class="small muted">e.g. AGENTS.md / CLAUDE.md</span></td><td>Use this folder structure.<br>Document every sample exclusion.</td></tr>
-      <tr><td><strong>Skills</strong><br><span class="small muted">Reusable instructions and resources</span></td><td>A repeatable workflow for checking references or producing figures.</td></tr>
-      <tr><td><strong>MCP connections</strong><br><span class="small muted">A standard for connecting tools and data</span></td><td>Access an approved repository, document store or database tool.</td></tr>
-    </tbody>
-  </table>
-  <p class="small muted" style="margin-top:22px">Support and naming vary. Instructions and tools operate within the available permissions.</p>
-  <p class="source"><a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">Project instructions</a> · <a href="https://agentskills.io/home">Agent Skills standard</a> · <a href="https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro">MCP introduction</a></p>
-  <aside class="notes">17:00–19:00 (2 minutes). Project instructions do not retrain the model. Skills may bundle scripts, templates and other resources; they are not inherently CLI-only. MCP standardizes the connection to a tool; it does not make the service trustworthy or grant arbitrary access. Review third-party instructions and code before installing them.</aside>
-</section>
-
-<section id="working-cycle">
-  <span class="eyebrow">08 · A practical workflow</span>
-  <h2>Give the work a beginning and an end</h2>
-  <div class="steps">
-    <div class="step active"><span class="n">01</span>Define</div><div class="step"><span class="n">02</span>Inspect</div><div class="step"><span class="n">03</span>Plan</div><div class="step"><span class="n">04</span>Change</div><div class="step"><span class="n">05</span>Run</div><div class="step active"><span class="n">06</span>Verify</div><div class="step"><span class="n">07</span>Report</div>
+<section id="capabilities">
+  <span class="eyebrow">05 · What becomes possible</span>
+  <h2>From a request to an artifact</h2>
+  <div class="grid four review-grid capability-grid">
+    <div class="card"><div class="visual-icon" aria-hidden="true">⌕</div><h3>Inspect</h3><p>Files and sources</p></div>
+    <div class="card"><div class="visual-icon" aria-hidden="true">✎</div><h3>Create</h3><p>Code, slides, tools</p></div>
+    <div class="card"><div class="visual-icon" aria-hidden="true">▶</div><h3>Run</h3><p>Analysis and checks</p></div>
+    <div class="card gold"><div class="visual-icon" aria-hidden="true">↻</div><h3>Revise</h3><p>After feedback</p></div>
   </div>
-  <div class="grid two" style="margin-top:32px">
-    <div class="card gold"><h3>Before the work</h3><p>Define the question, inputs, constraints and evidence of completion.</p></div>
-    <div class="card gold"><h3>Before using the result</h3><p>Review the changes, assumptions, checks and unresolved issues.</p></div>
+  <div class="bar soft">Useful outputs are files and evidence you can inspect.</div>
+  <aside class="notes">15:00–18:00 (3 minutes). Show breadth without a product list: agents can search a project, create scripts or a small teaching site, run available software, and refine outputs based on tests or human feedback. The actual ability depends on its tools, access and environment. Some tasks finish in minutes; complex tasks may still need substantial steering. A polished artifact is not proof of quality.</aside>
+</section>
+
+<section id="wrong-results">
+  <span class="eyebrow">06 · Limit one: truth</span>
+  <h2>A plausible result can be wrong</h2>
+  <div class="grid four review-grid failure-grid">
+    <div class="card"><div class="visual-icon" aria-hidden="true">÷</div><h3>Wrong denominator</h3><p>Check one row.</p></div>
+    <div class="card"><div class="visual-icon" aria-hidden="true">↕</div><h3>Duplicate merge</h3><p>Count the rows.</p></div>
+    <div class="card"><div class="visual-icon" aria-hidden="true">“ ”</div><h3>Invented citation</h3><p>Open the source.</p></div>
+    <div class="card gold"><div class="visual-icon" aria-hidden="true">?</div><h3>Confident claim</h3><p>Trace the evidence.</p></div>
   </div>
-  <div class="bar soft">A failed check sends the work back to inspection or revision.</div>
-  <aside class="notes">19:00–22:00 (3 minutes). This is a recommended research workflow, not a fixed algorithm every agent follows. Human judgment matters throughout, especially defining the question and reviewing evidence. Use a merge as the running example: count keys before and after, investigate duplicate rows, correct and rerun.</aside>
+  <div class="big-statement">Code running ≠ research being correct.</div>
+  <aside class="notes">18:00–22:00 (4 minutes). Use the finance demo to illustrate a ratio with the wrong denominator: the script runs, the chart looks plausible, but the research definition is wrong. A merge can multiply observations silently. A citation can look real and point to another paper. A model can confidently narrate a weak or unsupported finding. The right check depends on the claim: inspect definitions, row counts, raw observations and primary sources. Another AI's agreement alone is not independent evidence.</aside>
 </section>
 
-<section id="task-brief">
-  <span class="eyebrow">09 · A brief the agent can check</span>
-  <h2>State the task and the evidence</h2>
-  <div class="task-brief">
-    <p><mark>Input</mark> Inspect this synthetic firm-year dataset. Report columns, missing values and duplicate firm-year keys.</p>
-    <p><mark>Goal</mark> Plot the yearly median of firm-level ROA, calculated as 100 × net income / year-end total assets.</p>
-    <p><mark>Constraints</mark> Use positive assets and non-missing inputs. Report exclusions. Keep the input file unchanged.</p>
-    <p><mark>Completion</mark> Save the figure, summary table and run instructions. Run the script and show what you checked.</p>
+<section id="system-access">
+  <span class="eyebrow">07 · Limit two: action</span>
+  <h2>Terminal access has consequences</h2>
+  <div class="risk-diagram">
+    <div class="terminal-card"><span class="label">Bash / terminal tools</span><div>Read files</div><div>Change the system</div><div class="danger">Delete files</div></div>
+    <div class="risk-arrow" aria-hidden="true">→</div>
+    <div class="risk-message">What can it reach?<br><strong>What may it change?</strong></div>
   </div>
-  <p class="small muted" style="margin-top:22px">For a real study, you supply the justified variable definitions and sample rules.</p>
-  <aside class="notes">22:00–25:00 (3 minutes). Read the four pieces of the brief. The requested ratio uses contemporaneous total assets as a simple teaching definition; many real research designs use other definitions. Do not let the agent silently choose winsorization, identification, filters or missing-value treatment. The demo has no regression or causal claim.</aside>
+  <div class="safety-tags"><span>Limit access</span><span>Review actions</span><span>Keep recoverable copies</span></div>
+  <p class="source">Technical boundaries and approvals: <a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing</a> · <a href="https://learn.chatgpt.com/docs/agent-approvals-security">Approvals</a></p>
+  <aside class="notes">22:00–25:00 (3 minutes). This is a separate limitation from incorrect answers. A coding agent with Bash or terminal access can run commands that change software, system settings or project files, including deleting files within its reach. The specific risk depends on its permissions, sandbox and working directory. A project branch helps recover tracked code but is not a security sandbox and does not restore every deleted untracked file. Use scoped access, inspect consequential commands and keep recoverable copies of valuable data.</aside>
 </section>
 
-<section id="review-evidence">
-  <span class="eyebrow">10 · Review what actually happened</span>
-  <h2>Ask for evidence you can inspect</h2>
-  <div class="grid four review-grid">
-    <div class="card"><h3>What changed?</h3><p>Read the file diff and inspect the generated artifacts.</p></div>
-    <div class="card"><h3>What ran?</h3><p>Check the command, its output and the run instructions.</p></div>
-    <div class="card"><h3>What was checked?</h3><p>Look at counts, keys, units and a manual calculation.</p></div>
-    <div class="card gold"><h3>What remains uncertain?</h3><p>Read the assumptions, limitations and unfinished checks.</p></div>
+<section id="research-use">
+  <span class="eyebrow">08 · For researchers</span>
+  <h2>From data to checked evidence</h2>
+  <div class="grid two use-case-grid">
+    <div class="use-case-list"><div><strong>1</strong> Inspect the data</div><div><strong>2</strong> Build and run an analysis</div><div><strong>3</strong> Check the sample and figure</div><p class="small muted">You decide the definition and interpretation.</p></div>
+    <figure class="figure-card"><img src="demo/reference/outputs/yearly_roa.svg" alt="Example chart of yearly median return on assets from synthetic data"><figcaption>Example output from synthetic data</figcaption></figure>
   </div>
-  <div class="bar">Code that runs can still answer the wrong research question.</div>
-  <aside class="notes">25:00–27:00 (2 minutes). A fluent delivery message is not evidence that a check ran. Open the actual result. An explanation of code is helpful, but does not independently verify its correctness. Review the sample and meaning of variables, not only syntax or a green test result.</aside>
+  <aside class="notes">25:00–29:00 (4 minutes). This example uses the synthetic finance dataset in the demo package. A researcher gives the agent a definition and a workspace, asks it to inspect the dataset, produce a repeatable script and figure, and report sample counts and missingness. Other useful tasks include reproducing a published chart, checking a cleaning pipeline or assembling a research website. The researcher verifies variables, units, exclusions and whether the figure answers the actual question. This chart is a prepared example, not a live result.</aside>
 </section>
 
-<section id="research-workflows">
-  <span class="eyebrow">11 · Research applications</span>
-  <h2>Useful tasks have visible checks</h2>
-  <table>
-    <thead><tr><th>Delegate</th><th>Check</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Clean and merge data</strong></td><td>Keys, units, duplicated rows and lost observations.</td></tr>
-      <tr><td><strong>Reproduce a table or figure</strong></td><td>Samples, variable definitions, estimates and labels.</td></tr>
-      <tr><td><strong>Translate Stata ↔ R ↔ Python</strong></td><td>Defaults, missing values, standard errors and numerical differences.</td></tr>
-    </tbody>
-  </table>
-  <div class="bar soft">Keep the research decision visible in the task, code and documentation.</div>
-  <aside class="notes">27:00–30:00 (3 minutes). Use examples relevant to finance researchers. Coding agents can help with identifier mapping, replication scripts and documentation, but a successful merge may still be economically wrong. Cross-language replication requires matching defaults, sample rules and estimation choices. Avoid promising fixed time savings.</aside>
-</section>
-
-<section id="teaching">
-  <span class="eyebrow">12 · Teaching and communication</span>
-  <h2>Code can produce things people use</h2>
-  <div class="grid three">
-    <div class="card"><span class="label">Teaching</span><h3>Make a model interactive</h3><p>A bond-pricing exercise with sliders, explanations and feedback.</p></div>
-    <div class="card"><span class="label">Communication</span><h3>Update a research homepage</h3><p>Turn a CV and publication list into a maintained website.</p></div>
-    <div class="card gold"><span class="label">Materials</span><h3>Package a useful artifact</h3><p>A figure, teaching dataset or documented replication folder.</p></div>
+<section id="lecturer-use">
+  <span class="eyebrow">09 · For lecturers</span>
+  <h2>Build an exercise students can test</h2>
+  <div class="grid two use-case-grid">
+    <div class="use-case-list"><div><strong>1</strong> Choose a learning goal</div><div><strong>2</strong> Let the agent build it</div><div><strong>3</strong> Test the explanation</div><p class="small muted">You decide what students should learn.</p></div>
+    <div class="exercise-mock" role="img" aria-label="Illustrative bond pricing exercise: a yield slider and a bond price that falls as yield rises"><span class="label">Illustrative exercise</span><h3>Bond price and yield</h3><div class="mock-slider"><span>Yield</span><span class="mock-track"><i></i></span><strong>↑</strong></div><div class="mock-answer">Bond price <strong>↓</strong></div><small>Students change an input and explain the result.</small></div>
   </div>
-  <div class="bar soft">Review the calculations, accessibility and information made public.</div>
-  <aside class="notes">30:00–32:00 (2 minutes). These are illustrative use cases. The agent can create source files and use available tools to preview them. Publishing, connecting accounts and collecting student data require appropriate review and access. Avoid showing privileged controls or credentials in examples.</aside>
+  <aside class="notes">29:00–33:00 (4 minutes). A lecturer can describe a learning goal and have the agent build a small interactive exercise, test cases, a synthetic dataset or a visual explanation. This mock bond-pricing exercise illustrates the direction of the relationship. The teacher must check the calculations, units, wording and accessibility and decide whether it supports the learning objective. Be clear that UU policy constrains assessment: AI is not a substitute for the lecturer's evaluation of students.</aside>
 </section>
 
-<section id="convincing-errors">
-  <span class="eyebrow">13 · Common failure modes</span>
-  <h2>Errors can look convincing</h2>
-  <div class="grid four review-grid">
-    <div class="card"><h3>A merge duplicates rows</h3><p>Check key uniqueness and row counts before and after.</p></div>
-    <div class="card"><h3>A ratio uses the wrong denominator</h3><p>Trace the definition and calculate one observation yourself.</p></div>
-    <div class="card"><h3>A figure hides excluded years</h3><p>Inspect the plotted table and explain every exclusion.</p></div>
-    <div class="card gold"><h3>A citation points to another paper</h3><p>Open the source and verify its bibliographic details.</p></div>
+<section id="thesis-spectrum">
+  <span class="eyebrow">10 · For students</span>
+  <h2>Thesis work: help or handover?</h2>
+  <div class="grid three spectrum">
+    <div class="card"><span class="label">Explore</span><div class="visual-icon" aria-hidden="true">?</div><h3>Explain a method</h3><p>Help me understand.</p></div>
+    <div class="card"><span class="label">Assist</span><div class="visual-icon" aria-hidden="true">↔</div><h3>Draft code</h3><p>I check every choice.</p></div>
+    <div class="card gold"><span class="label">Outsource</span><div class="visual-icon" aria-hidden="true">!</div><h3>Write the argument</h3><p>Whose reasoning is it?</p></div>
   </div>
-  <p class="small muted" style="margin-top:24px">Match the check to the error that would matter for your task.</p>
-  <aside class="notes">32:00–34:00 (2 minutes). Ask for one example of a plausible-looking error the audience has encountered. The value of an agent's execution loop is that checks can be run and repeated; the researcher must choose meaningful checks. Another model agreeing is not the same as verifying against data or a source.</aside>
+  <div class="bar soft">What is permitted depends on the assignment's AI Index level.</div>
+  <p class="source">Utrecht University: <a href="https://www.uu.nl/en/organisation/ai-policy/students/ai-index">AI Index for students</a> · <a href="https://www.uu.nl/en/organisation/ai-policy/teachers/for-teachers/ai-index">AI Index for teachers</a></p>
+  <aside class="notes">33:00–37:00 (4 minutes). Students can use agents to explore methods, practise code, inspect data and perhaps assist with drafts where permitted. They can also delegate a thesis analysis, literature discussion and argument so completely that the submitted work no longer demonstrates their own thinking. Do not present these columns as universal permission categories. At Utrecht University, the teacher or course coordinator sets an AI Index level for a course or assignment; thesis and programme rules may be more specific. Disclosure and prompt records may also be required. Ask what learning outcome the assignment is meant to assess.</aside>
 </section>
 
-<section id="where-work-happens">
-  <span class="eyebrow">14 · Know where your data goes</span>
-  <h2>Execution and model processing are separate</h2>
-  <div class="grid two">
-    <div class="card"><span class="label">Where do tools run?</span><h3>The working environment</h3><p>Your computer, a remote machine or a hosted sandbox.</p></div>
-    <div class="card gold"><span class="label">Where is input processed?</span><h3>The model service</h3><p>A hosted provider, or a local model if the system is configured for one.</p></div>
+<section id="thesis-defence">
+  <span class="eyebrow">11 · For supervisors</span>
+  <h2>Can the student defend the work?</h2>
+  <div class="grid three visual-cards question-grid">
+    <div class="card"><div class="big-number">Why?</div><h3>This design</h3></div>
+    <div class="card"><div class="big-number">Which?</div><h3>Sources and data</h3></div>
+    <div class="card gold"><div class="big-number">How?</div><h3>Reproduce the result</h3></div>
   </div>
-  <div class="bar">Local execution can still send file excerpts and tool results to a hosted model.</div>
-  <p class="small muted" style="margin-top:24px">Check the configured service, account terms and institutional rules before using restricted data.</p>
-  <p class="source">Example data flow and account-dependent policies: <a href="https://code.claude.com/docs/en/data-usage">Claude Code data usage</a></p>
-  <aside class="notes">34:00–36:00 (2 minutes). Separate the interface, the execution environment and the inference service. Running a Python script locally does not establish that the surrounding agent session stays local. Training use, retention and external tool access are separate questions. Use synthetic or approved data for an initial trial.</aside>
+  <div class="big-statement">Ask for reasoning, evidence and an honest account of AI use.</div>
+  <aside class="notes">37:00–39:00 (2 minutes). A useful supervision discussion asks the student to explain a key design choice, show the data and sources, and reproduce or alter one result. This reveals understanding more directly than judging the polish of prose. Ask students to describe where an agent contributed, in line with the assignment's permitted level and disclosure rules. Avoid treating an AI detector score as proof of misconduct. Utrecht University's current teacher guidance says such software may not be used to confront students or as evidence of suspected AI fraud based on its result.</aside>
 </section>
 
-<section id="bounded-workspace">
-  <span class="eyebrow">15 · Control the scope</span>
-  <h2>Use a bounded workspace</h2>
-  <div class="grid two">
-    <div class="card"><span class="label">Sandbox</span><h3>What can commands access?</h3><p>Technical limits on files, network access and other resources.</p></div>
-    <div class="card gold"><span class="label">Approval policy</span><h3>When does the work pause?</h3><p>Rules that decide which actions need authorization.</p></div>
+<section id="takeaway">
+  <span class="eyebrow">12 · The takeaway</span>
+  <h2>Give it work. Keep your judgment.</h2>
+  <div class="grid three visual-cards takeaway-grid">
+    <div class="card"><div class="visual-icon" aria-hidden="true">□</div><h3>Scope access</h3></div>
+    <div class="card"><div class="visual-icon" aria-hidden="true">◎</div><h3>Watch actions</h3></div>
+    <div class="card gold"><div class="visual-icon" aria-hidden="true">✓</div><h3>Verify claims</h3></div>
   </div>
-  <ul class="compact" style="margin-top:28px"><li>Start with a project copy or branch and scoped access.</li><li>Keep raw data recoverable; inspect changes before sharing.</li><li>Review instructions from downloaded files, skills and websites.</li></ul>
-  <p class="source">Technical boundaries and approvals: <a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing</a> · <a href="https://learn.chatgpt.com/docs/agent-approvals-security">Agent approvals and security</a></p>
-  <aside class="notes">36:00–38:00 (2 minutes). A branch or worktree helps recover code changes; it is not a security sandbox. A text request to preserve raw data is useful guidance, while filesystem permissions enforce an access boundary. Defaults vary. Explain prompt injection simply: a file or webpage can contain instructions that try to redirect the agent away from your task.</aside>
-</section>
-
-<section id="choose-a-tool">
-  <span class="eyebrow">16 · Start with your task</span>
-  <h2>Choose a tool you can work with and review</h2>
-  <ul>
-    <li>Does it work with your project files and required software?</li>
-    <li>Can you inspect its actions, changes and results?</li>
-    <li>Does its data handling fit the task?</li>
-    <li>Can you control access and recover changes?</li>
-  </ul>
-  <div class="bar soft">Examples: Claude Code · Codex · Gemini CLI · GitHub Copilot</div>
-  <p class="small muted" style="margin-top:22px">Available models, features and limits change. Use the current <a href="#/setup">setup links</a>.</p>
-  <aside class="notes">38:00–39:00 (1 minute). These are examples, not a ranking or an exhaustive list. Model selection is separate from tool selection. Start with a supported tool you can access and a task small enough to inspect. Pricing and model-version comparisons belong in current documentation, not the core talk.</aside>
-</section>
-
-<section id="watch-the-demo">
-  <span class="eyebrow">17 · Bring the concepts together</span>
-  <h2>What to watch in the demo</h2>
-  <div class="grid three">
-    <div class="card"><h3>What does the model decide?</h3><p>The next step, proposed code and interpretation of results.</p></div>
-    <div class="card"><h3>What does the harness enable?</h3><p>Reading files, running code and returning feedback.</p></div>
-    <div class="card gold"><h3>What do we still judge?</h3><p>The definitions, sample rules and adequacy of the checks.</p></div>
-  </div>
-  <div class="deliverables"><span>Reproducible script</span><span>Figure</span><span>Sample audit</span><span>Run instructions</span></div>
-  <aside class="notes">39:00–40:00 (1 minute). Conclude the presentation and move to the 10-minute demo. Ask the audience to follow the distinction between model, harness and researcher. The reference package provides a fallback if the live run is slow. It must be labelled as a prepared example when used.</aside>
+  <p class="lead" style="margin-top:34px">Now let’s watch one work.</p>
+  <aside class="notes">39:00–40:00 (1 minute). Summarize the talk in three verbs: scope what the agent can access, watch the actions it takes, and verify the claims made from its output. Agents can take on meaningful technical work for researchers and lecturers; human accountability remains with the person using the result. Introduce the 10-minute demo. The reference package supplies a clearly labelled fallback if the live run stalls.</aside>
 </section>
 
 <section id="demo">
   <span class="eyebrow">Live demo · 40:00–50:00</span>
-  <h2>From a dataset to a checked figure</h2>
-  <p class="lead">One task. One workspace. One agent.</p>
-  <div class="grid two" style="margin-top:24px">
-    <div class="card"><h3>The input</h3><p>A <strong>synthetic</strong> firm-year dataset.<br>Net income and total assets.<br><a href="assets/compustat_sample.csv" download>Download the CSV</a></p></div>
-    <div class="card gold"><h3>The result</h3><p>Yearly median ROA (%), a reproducible script and an explicit sample audit.</p></div>
+  <h2>From data to a checked figure</h2>
+  <div class="steps visual-steps" aria-label="Demo sequence: inspect, build, run, check">
+    <div class="step"><span class="n">1</span>Inspect</div><div class="step"><span class="n">2</span>Build</div><div class="step"><span class="n">3</span>Run</div><div class="step active"><span class="n">4</span>Check</div>
   </div>
-  <div class="steps"><div class="step"><span class="n">1 MIN</span>Brief</div><div class="step"><span class="n">2 MIN</span>Inspect</div><div class="step"><span class="n">3 MIN</span>Build / run</div><div class="step"><span class="n">2 MIN</span>Check / revise</div><div class="step active"><span class="n">2 MIN</span>Review</div></div>
-  <p class="small" style="margin-top:20px"><a href="#/demo-resources">Prompt, presenter guide and prepared fallback →</a></p>
-  <aside class="notes">40:00–50:00 (10 minutes). Open a fresh prepared workspace with only the synthetic CSV and the prompt. No installation during the demo. Show the brief (1 min), inspection and plan (2), creation and execution (3), checks and a directed revision such as improving a caption (2), review actual files and run instructions (2). Reference outputs live in demo/reference/outputs/. If the live run stalls, clearly say you are switching to a previously run example. Do not imply the prepared output was produced live.</aside>
+  <div class="grid two demo-links"><div class="card"><h3>Input</h3><p><a href="assets/compustat_sample.csv" download>Synthetic finance data</a></p></div><div class="card gold"><h3>Output</h3><p>Script · Figure · Sample audit</p></div></div>
+  <p class="small" style="margin-top:28px"><a href="#/demo-resources">Prompt and prepared fallback →</a></p>
+  <aside class="notes">40:00–50:00 (10 minutes). Open a fresh prepared workspace with only the synthetic CSV and prompt. Show the brief (1 minute), data inspection and plan (2), creation and execution (3), checks and a directed revision (2), and review of files and run instructions (2). The point is to show how the agent works and how a person checks its result. Reference outputs live in demo/reference/outputs/. If the live run stalls, explicitly say you are switching to a previously run example.</aside>
 </section>
 
 <section id="questions" class="qa">
   <span class="eyebrow">Q&amp;A · 50:00–60:00</span>
-  <h1>Where would this help<br>in your work?</h1>
-  <p class="lead">A repetitive task · A difficult handoff<br>An output you need to verify</p>
-  <p class="small" style="margin-top:36px"><a href="https://usefinance.github.io/agents/">usefinance.github.io/agents</a></p>
+  <h1>What would you try?</h1>
+  <p class="lead">What would you keep for humans?</p>
+  <p class="small" style="margin-top:42px"><a href="https://usefinance.github.io/agents/">usefinance.github.io/agents</a></p>
   <p class="tiny"><a href="#/sources">Sources</a> &nbsp;·&nbsp; <a href="#/setup">Getting started</a> &nbsp;·&nbsp; <a href="#/demo-resources">Demo files</a></p>
-  <aside class="notes">50:00–60:00 (10 minutes). Reserve the full time. Invite concrete tasks and discuss the input, access required, expected artifact and how to check it. The presentation ends here. The following slides are optional references for questions or later use.</aside>
+  <aside class="notes">50:00–60:00 (10 minutes). Invite concrete tasks from research, course design and thesis supervision. For each idea ask about the input, the access required, the output, what could go wrong, and what a person would need to check. The following slides are optional references for later use.</aside>
 </section>
 
 <!-- Optional reference material. Not part of the 40-minute presentation. -->
@@ -398,7 +360,7 @@
   <h2>Read more about the concepts</h2>
   <div class="grid two">
     <div class="card"><h3>Models, harnesses and data</h3><ul class="links"><li><a href="https://code.claude.com/docs/en/how-claude-code-works">How Claude Code works</a></li><li><a href="https://developers.openai.com/api/docs/guides/agents-api/architecture">OpenAI: harness and environment</a></li><li><a href="https://code.claude.com/docs/en/data-usage">Claude Code data flow</a></li><li><a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing and approvals</a></li></ul></div>
-    <div class="card"><h3>Instructions and tools</h3><ul class="links"><li><a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">AGENTS.md instructions</a></li><li><a href="https://agentskills.io/home">Agent Skills standard</a></li><li><a href="https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro">Model Context Protocol</a></li><li><a href="https://geminicli.com/docs/reference/tools/">Gemini CLI tools</a></li></ul></div>
+    <div class="card"><h3>Teaching and thesis work</h3><ul class="links"><li><a href="https://www.uu.nl/en/organisation/ai-policy/students/ai-index">UU AI Index for students</a></li><li><a href="https://www.uu.nl/en/organisation/ai-policy/teachers/for-teachers/ai-index">UU AI Index for teachers</a></li><li><a href="https://www.uu.nl/en/organisation/ai-policy/teachers/for-teachers/ai-and-assessments">UU guidance on assessment</a></li><li><a href="https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research">UNESCO guidance</a></li></ul></div>
   </div>
   <p class="small muted" style="margin-top:22px">The diagrams and research examples are teaching aids. Check current documentation for product-specific behavior.</p>
   <aside class="notes">Reference slide, outside the timed talk. These primary sources underpin the definitions and current corrections. Product behavior can vary by version, account, configuration and organization policy.</aside>
@@ -470,7 +432,7 @@ Include instructions so I can reproduce the result.</code></pre>
 </section>
 
 </div></div>
-<div class="deck-footer"><a href="#/welcome">Finance @ U.S.E.</a><span class="sep">/</span>Coding agents for researchers<span class="sep">·</span><a href="#/questions">Q&amp;A</a><span class="sep">·</span><a href="#/sources">References</a><span class="sep">·</span><button id="overview-button" type="button">Overview</button><span class="sep">·</span><button id="notes-button" type="button">Speaker notes</button></div>
+<div class="deck-footer"><a href="#/welcome">Finance @ U.S.E.</a><span class="sep">/</span>Beyond chat: coding agents<span class="sep">·</span><a href="#/questions">Q&amp;A</a><span class="sep">·</span><a href="#/sources">References</a><span class="sep">·</span><button id="overview-button" type="button">Overview</button><span class="sep">·</span><button id="notes-button" type="button">Speaker notes</button></div>
 <script src="assets/vendor/reveal/reveal.js"></script>
 <script src="assets/vendor/reveal/notes.js"></script>
 <script>
