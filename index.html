@@ -62,6 +62,16 @@
     .deck-footer button:hover,.deck-footer a:hover { text-decoration:underline; }
     .deck-footer button:focus-visible,.deck-footer a:focus-visible { outline:2px solid var(--teal); outline-offset:4px; }
     .deck-footer .sep { margin:0 10px; color:#b4a978; }
+    #speaker-notes-dialog { width:min(850px,calc(100vw - 32px)); max-height:85vh; overflow-y:auto; padding:28px; border:1px solid var(--line); border-radius:14px; background:#fffdf5; color:var(--ink); box-shadow:0 20px 70px #19180f40; font:18px/1.5 "Segoe UI",Arial,sans-serif; }
+    #speaker-notes-dialog::backdrop { background:#19180fb3; }
+    .notes-dialog-header { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; margin-bottom:16px; }
+    .notes-dialog-header h2 { margin:0; font-size:27px; line-height:1.2; }
+    .notes-dialog-buttons { display:flex; gap:10px; flex-shrink:0; }
+    #speaker-notes-dialog button { border:1px solid #b49a38; border-radius:7px; background:#fff; color:var(--ink); padding:9px 14px; font:600 16px "Segoe UI",Arial,sans-serif; cursor:pointer; }
+    #speaker-notes-dialog button:hover { background:var(--gold); }
+    #speaker-notes-dialog button:focus-visible { outline:3px solid var(--teal); outline-offset:3px; }
+    #speaker-notes-content p { margin:0 0 16px; }
+    #speaker-notes-content pre { white-space:pre-wrap; overflow-wrap:anywhere; background:#f5f1e3; border:1px solid var(--line); border-radius:9px; padding:18px; font:16px/1.5 Consolas,"Liberation Mono",monospace; }
     .reveal .controls { color:#816600; bottom:12px; }
     .reveal .progress { height:5px; color:#c9a300; background:#eee7ce; }
     .reveal .slide-number { background:none; font:14px "Segoe UI",Arial,sans-serif; color:#706b54; right:118px; bottom:19px; }
@@ -447,22 +457,57 @@ Include instructions so I can reproduce the result.</code></pre>
 
 </div></div>
 <div class="deck-footer"><a href="#/welcome">Finance @ U.S.E.</a><span class="sep">/</span>LLMs Beyond Chat: Coding Agents<span class="sep">·</span><a href="#/questions">Q&amp;A</a><span class="sep">·</span><a href="#/sources">References</a><span class="sep">·</span><button id="overview-button" type="button">Overview</button><span class="sep">·</span><button id="notes-button" type="button">Speaker notes</button></div>
+<dialog id="speaker-notes-dialog" aria-labelledby="speaker-notes-title">
+  <div class="notes-dialog-header"><h2 id="speaker-notes-title">Speaker notes</h2><div class="notes-dialog-buttons"><button id="copy-note-prompt" type="button" hidden>Copy prompt</button><button id="notes-close" type="button">Close</button></div></div>
+  <div id="speaker-notes-content"></div>
+</dialog>
 <script src="assets/vendor/reveal/reveal.js"></script>
-<script src="assets/vendor/reveal/notes.js"></script>
 <script>
   Reveal.initialize({
     hash:true, controls:true, controlsTutorial:true, progress:true,
     slideNumber:"c/t", center:false, width:1200, height:700,
     margin:0.025, minScale:0.15, maxScale:2,
-    transition:"fade", transitionSpeed:"fast", backgroundTransition:"none",
-    plugins:[RevealNotes]
+    transition:"fade", transitionSpeed:"fast", backgroundTransition:"none"
   });
   document.getElementById("overview-button").addEventListener("click", function() {
     Reveal.toggleOverview();
   });
-  document.getElementById("notes-button").addEventListener("click", function() {
-    Reveal.getPlugin("notes").open();
+  var notesDialog = document.getElementById("speaker-notes-dialog");
+  var notesContent = document.getElementById("speaker-notes-content");
+  var copyNotePrompt = document.getElementById("copy-note-prompt");
+  function showSpeakerNotes() {
+    var slide = Reveal.getCurrentSlide();
+    var notes = slide.querySelector("aside.notes");
+    document.getElementById("speaker-notes-title").textContent = "Speaker notes · Slide " + (Reveal.getIndices().h + 1);
+    notesContent.innerHTML = notes ? notes.innerHTML : "<p>No notes for this slide.</p>";
+    copyNotePrompt.hidden = !notesContent.querySelector("pre");
+    copyNotePrompt.textContent = "Copy prompt";
+    if (!notesDialog.open) notesDialog.showModal();
+  }
+  document.getElementById("notes-button").addEventListener("click", showSpeakerNotes);
+  document.getElementById("notes-close").addEventListener("click", function() { notesDialog.close(); });
+  copyNotePrompt.addEventListener("click", async function() {
+    var prompt = notesContent.querySelector("pre");
+    if (!prompt) return;
+    try {
+      await navigator.clipboard.writeText(prompt.textContent.trim());
+      copyNotePrompt.textContent = "Copied!";
+    } catch (error) {
+      var selection = window.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(prompt);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      copyNotePrompt.textContent = "Selected — press Ctrl/Cmd+C";
+    }
   });
+  document.addEventListener("keydown", function(event) {
+    if (event.key.toLowerCase() !== "s" || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (event.target instanceof Element && event.target.closest("input,textarea,[contenteditable='true']")) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (notesDialog.open) notesDialog.close(); else showSpeakerNotes();
+  }, true);
   document.querySelectorAll("[data-copy]").forEach(function(button) {
     button.addEventListener("click", async function() {
       var text = document.getElementById(button.dataset.copy).textContent;
