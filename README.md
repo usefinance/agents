@@ -1,4 +1,4 @@
-# Beyond Chat: Coding Agents in Research and Teaching
+# LLMs Beyond Chat: Coding Agents
 
 A presentation for researchers and lecturers at Utrecht School of Economics:
 **40 minutes of presentation, 10 minutes of live demonstration, and 10 minutes of Q&A.**
