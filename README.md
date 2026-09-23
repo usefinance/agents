@@ -1,8 +1,7 @@
-# Coding Agents for Researchers — USE Finance
+# Beyond Chat: Coding Agents in Research and Teaching
 
-A presentation for researchers at Utrecht School of Economics:
+A presentation for researchers and lecturers at Utrecht School of Economics:
 **40 minutes of presentation, 10 minutes of live demonstration, and 10 minutes of Q&A.**
-No live installation is required to attend.
 
 **Live slides:** https://usefinance.github.io/agents/
 
@@ -11,15 +10,15 @@ for the QR at the top left and the Finance Utrecht logo at the top right.
 
 ## What the talk covers
 
-- Chat as an interface, and the capabilities that make a workflow agentic.
-- Coding agents as a model working inside a harness with context, tools,
-  an execution environment and controls.
-- A practical cycle: define, inspect, plan, change, run, verify and report.
-- Project instructions, reusable skills and MCP connections.
-- Research, teaching and communication examples, with concrete checks.
-- Execution location, model processing, access boundaries and approvals.
+- How an agent extends a familiar chat workflow with tools and feedback.
+- The model, harness and working loop, explained with one task.
+- Research and teaching examples with outputs people can inspect.
+- Two kinds of failure: convincing wrong results, and consequential actions
+  through terminal or file access.
+- Student thesis use and misuse, with Utrecht University's assignment-specific
+  AI Index as the policy frame.
 
-The core sequence has 18 slides. Slide 19 is the live demo and slide 20 is Q&A.
+The core sequence has 13 visual slides. Slide 14 is the live demo and slide 15 is Q&A.
 Five reference slides follow, with sources, current setup links, prompt templates,
 demo resources and additional use cases. Product documentation was reviewed on
 23 September 2026; model rankings, fixed prices and performance promises are
