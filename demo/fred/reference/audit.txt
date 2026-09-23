@@ -1,0 +1,10 @@
+Source: FRED CPIAUCSL and FEDFUNDS
+Input: demo/fred/fred_snapshot.csv
+Inflation: 100 * (CPI_t / CPI_t-12 - 1)
+Sample: 2019-01-01 to 2026-08-01
+Paired months: 91
+Months with missing series: 1
+Missing month(s): 2025-10-01
+Latest inflation (%): 3.35
+Latest federal funds rate (%): 3.63
+Interpretation: descriptive only; this chart does not identify a causal effect.

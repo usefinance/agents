@@ -187,13 +187,13 @@
 <section id="beyond-chat">
   <span class="eyebrow">01 · A familiar task</span>
   <h2>What changes beyond chat?</h2>
-  <p class="request">“Check these data and make a figure.”</p>
+  <p class="request">“Chart US inflation and interest rates from FRED.”</p>
   <div class="grid two comparison">
-    <div class="card"><span class="label">Conversation</span><div class="visual-icon" aria-hidden="true">☰</div><h3>Advice on screen</h3><p>You copy, run and return with errors.</p></div>
-    <div class="card gold"><span class="label">Agent workflow</span><div class="visual-icon" aria-hidden="true">↻</div><h3>Work in a workspace</h3><p>It inspects, builds, runs and revises.</p></div>
+    <div class="card"><span class="label">Advice-only chat</span><div class="visual-icon" aria-hidden="true">☰</div><h3>Suggests the code</h3><p>You fetch, run and fix it.</p></div>
+    <div class="card gold"><span class="label">Agent with tools</span><div class="visual-icon" aria-hidden="true">↻</div><h3>Produces the figure</h3><p>It fetches, runs and checks.</p></div>
   </div>
-  <div class="bar soft">The same chat interface can support either workflow.</div>
-  <aside class="notes">2:00–6:00 (4 minutes). Use the audience’s likely experience: a chatbot suggests Python or Stata code; the person copies it into a project, runs it, finds an error, and pastes the error back. In an agent workflow the system can use tools to inspect and edit project files, run the code, observe the error, and try again. The distinction is the accessible tools and feedback loop, not whether the screen looks like chat. Both require review.</aside>
+  <div class="bar soft">A chat interface can support either workflow.</div>
+  <aside class="notes">2:00–6:00 (4 minutes). Use the real FRED/Stata example that returns on the research and demo slides. An advice-only chat can suggest the calculation or Stata commands; the person still fetches the data, runs the code and brings errors back. An agent with the relevant tools can fetch the public FRED CSV, inspect it, write and run a Stata do-file, and produce a figure and audit. The distinction is tool access and feedback, not the visual shape of the interface. Neither workflow establishes scientific correctness by itself.</aside>
 </section>
 
 <section id="what-is-agent">
@@ -281,10 +281,10 @@
   <span class="eyebrow">08 · For researchers</span>
   <h2>From data to checked evidence</h2>
   <div class="grid two use-case-grid">
-    <div class="use-case-list"><div><strong>1</strong> Inspect the data</div><div><strong>2</strong> Build and run an analysis</div><div><strong>3</strong> Check the sample and figure</div><p class="small muted">You decide the definition and interpretation.</p></div>
-    <figure class="figure-card"><img src="demo/reference/outputs/yearly_roa.svg" alt="Example chart of yearly median return on assets from synthetic data"><figcaption>Example output from synthetic data</figcaption></figure>
+    <div class="use-case-list"><div><strong>1</strong> Fetch FRED data</div><div><strong>2</strong> Calculate in Stata</div><div><strong>3</strong> Check dates and gaps</div><p class="small muted">You decide what the comparison means.</p></div>
+    <figure class="figure-card"><img src="demo/fred/reference/inflation_fedfunds.png" alt="Stata chart comparing US CPI inflation and the effective federal funds rate since 2019"><figcaption>Stata output from public FRED data</figcaption></figure>
   </div>
-  <aside class="notes">25:00–29:00 (4 minutes). This example uses the synthetic finance dataset in the demo package. A researcher gives the agent a definition and a workspace, asks it to inspect the dataset, produce a repeatable script and figure, and report sample counts and missingness. Other useful tasks include reproducing a published chart, checking a cleaning pipeline or assembling a research website. The researcher verifies variables, units, exclusions and whether the figure answers the actual question. This chart is a prepared example, not a live result.</aside>
+  <aside class="notes">25:00–29:00 (4 minutes). This prepared chart uses real public CPIAUCSL and FEDFUNDS data from FRED. The Stata script computes annual CPI inflation from monthly CPI levels, then compares it with the monthly effective federal funds rate since 2019. It names the missing October 2025 CPI observation and leaves a gap rather than silently filling it. A researcher checks units, dates, the calculation and the interpretation. The plot is descriptive; it cannot establish whether interest rates caused inflation to change. The source snapshot and do-file are available in the demo resources.</aside>
 </section>
 
 <section id="lecturer-use">
@@ -336,13 +336,13 @@
 
 <section id="demo">
   <span class="eyebrow">Live demo · 40:00–50:00</span>
-  <h2>From data to a checked figure</h2>
+  <h2>From FRED to a Stata figure</h2>
   <div class="steps visual-steps" aria-label="Demo sequence: inspect, build, run, check">
     <div class="step"><span class="n">1</span>Inspect</div><div class="step"><span class="n">2</span>Build</div><div class="step"><span class="n">3</span>Run</div><div class="step active"><span class="n">4</span>Check</div>
   </div>
-  <div class="grid two demo-links"><div class="card"><h3>Input</h3><p><a href="assets/compustat_sample.csv" download>Synthetic finance data</a></p></div><div class="card gold"><h3>Output</h3><p>Script · Figure · Sample audit</p></div></div>
+  <div class="grid two demo-links"><div class="card"><h3>Input</h3><p><a href="demo/fred/fred_snapshot.csv" download>Public FRED data</a></p></div><div class="card gold"><h3>Output</h3><p>Stata code · Chart · Data audit</p></div></div>
   <p class="small" style="margin-top:28px"><a href="#/demo-resources">Prompt and prepared fallback →</a></p>
-  <aside class="notes">40:00–50:00 (10 minutes). Open a fresh prepared workspace with only the synthetic CSV and prompt. Show the brief (1 minute), data inspection and plan (2), creation and execution (3), checks and a directed revision (2), and review of files and run instructions (2). The point is to show how the agent works and how a person checks its result. Reference outputs live in demo/reference/outputs/. If the live run stalls, explicitly say you are switching to a previously run example.</aside>
+  <aside class="notes">40:00–50:00 (10 minutes). Ask the agent to fetch the two public FRED series and analyze them in Stata. Show the brief (1 minute), download and data inspection (2), creation and execution of a do-file (3), checks and a directed revision (2), and review of the chart, audit and code (2). FRED's public CSV download works without an API key. Stata's built-in import fred uses the keyed API and no key is configured here. A saved snapshot makes the example reproducible if the live network fails. If the run stalls, explicitly say you are switching to the prepared chart and audit; do not imply they were produced live.</aside>
 </section>
 
 <section id="questions" class="qa">
@@ -362,7 +362,7 @@
     <div class="card"><h3>Models, harnesses and data</h3><ul class="links"><li><a href="https://code.claude.com/docs/en/how-claude-code-works">How Claude Code works</a></li><li><a href="https://developers.openai.com/api/docs/guides/agents-api/architecture">OpenAI: harness and environment</a></li><li><a href="https://code.claude.com/docs/en/data-usage">Claude Code data flow</a></li><li><a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing and approvals</a></li></ul></div>
     <div class="card"><h3>Teaching and thesis work</h3><ul class="links"><li><a href="https://www.uu.nl/en/organisation/ai-policy/students/ai-index">UU AI Index for students</a></li><li><a href="https://www.uu.nl/en/organisation/ai-policy/teachers/for-teachers/ai-index">UU AI Index for teachers</a></li><li><a href="https://www.uu.nl/en/organisation/ai-policy/teachers/for-teachers/ai-and-assessments">UU guidance on assessment</a></li><li><a href="https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research">UNESCO guidance</a></li></ul></div>
   </div>
-  <p class="small muted" style="margin-top:22px">The diagrams and research examples are teaching aids. Check current documentation for product-specific behavior.</p>
+  <p class="small muted" style="margin-top:22px">Demo data: <a href="https://fred.stlouisfed.org/series/CPIAUCSL">US CPI</a> · <a href="https://fred.stlouisfed.org/series/FEDFUNDS">Effective federal funds rate</a> · <a href="https://fred.stlouisfed.org/docs/api/api_key.html">FRED API key guidance</a></p>
   <aside class="notes">Reference slide, outside the timed talk. These primary sources underpin the definitions and current corrections. Product behavior can vary by version, account, configuration and organization policy.</aside>
 </section>
 
@@ -378,7 +378,7 @@
       <tr><td><strong>GitHub Copilot</strong></td><td><a href="https://docs.github.com/en/copilot/get-started/about-github-copilot">Capabilities and access</a> · <a href="https://docs.github.com/en/copilot/get-started/quickstart-for-using-github-copilot-in-your-ide">IDE quickstart</a></td></tr>
     </tbody>
   </table>
-  <div class="bar soft">Try: inspect a small synthetic dataset, propose a plan, then produce one checked artifact.</div>
+  <div class="bar soft">Try: fetch public FRED data, propose a plan, then produce one checked artifact.</div>
   <p class="small muted" style="margin-top:18px">Confirm your account access, required software and usage limits before starting.</p>
   <aside class="notes">Optional setup reference. Follow current official documentation rather than copying outdated install commands. Access to a free chat account does not necessarily include the associated coding agent. Subscription quotas and API billing are separate arrangements.</aside>
 </section>
@@ -407,11 +407,11 @@ Include instructions so I can reproduce the result.</code></pre>
   <span class="eyebrow">Reference · The 10-minute demo</span>
   <h2>Live brief and prepared fallback</h2>
   <div class="grid two">
-    <div class="card"><h3>Run the demo</h3><ul class="links"><li><a href="assets/compustat_sample.csv" download>Synthetic dataset (CSV)</a></li><li><a href="demo/prompt.txt">Copyable demo prompt</a></li><li><a href="https://github.com/usefinance/agents/blob/main/demo/README.md">Presenter guide and timings</a></li></ul></div>
-    <div class="card gold"><h3>Prepared example</h3><ul class="links"><li><a href="demo/reference/outputs/yearly_roa.svg">Example figure</a></li><li><a href="demo/reference/outputs/yearly_roa.csv">Yearly summary table</a></li><li><a href="https://github.com/usefinance/agents/tree/main/demo/reference">Script, audit and run instructions</a></li></ul></div>
+    <div class="card"><h3>Run the demo</h3><ul class="links"><li><a href="demo/fred/fred_snapshot.csv" download>FRED data snapshot (CSV)</a></li><li><a href="demo/prompt.txt">Copyable agent prompt</a></li><li><a href="https://github.com/usefinance/agents/blob/main/demo/README.md">Presenter guide and timings</a></li></ul></div>
+    <div class="card gold"><h3>Prepared Stata example</h3><ul class="links"><li><a href="demo/fred/reference/inflation_fedfunds.png">Example chart</a></li><li><a href="demo/fred/reference/audit.txt">Data audit</a></li><li><a href="https://github.com/usefinance/agents/blob/main/demo/fred/analyze.do">Stata do-file</a></li><li><a href="demo/fred/reference/methods.md">Methods and sources</a></li></ul></div>
   </div>
-  <p class="small muted" style="margin-top:24px">Use a fresh demo folder. Keep the reference implementation separate. If you switch to the prepared result, tell the audience.</p>
-  <aside class="notes">Reference only. The prepared script runs using the Python standard library. See the presenter README for the exact command and expected audit totals. All data are synthetic; no inference about actual companies is warranted.</aside>
+  <p class="small muted" style="margin-top:24px">Live FRED data can change; the saved snapshot reproduces the prepared result.</p>
+  <aside class="notes">Reference only. The prepared chart was generated in Stata/SE 18 from the saved FRED CSV on 23 September 2026. Its audit reports one missing CPI month. See the presenter guide for the live download route, fallback and exact commands. Recalculate expected figures when using freshly downloaded data.</aside>
 </section>
 
 <section id="more-workflows" class="appendix">

@@ -47,36 +47,38 @@ server or the hosted site and may require allowing a popup.
 
 ## Live demonstration
 
-The demo creates a reproducible yearly median ROA figure from the synthetic
-firm-year CSV already included in this repository. ROA is explicitly defined as
-100 × net income / year-end total assets for this teaching example.
+The demo uses real public data from FRED to chart US annual CPI inflation and
+the effective federal funds rate since 2019. A coding agent fetches the data,
+then writes and runs a Stata analysis. The comparison is descriptive and makes
+no causal claim.
 
-- [Presenter guide](demo/README.md): the ten-minute run sheet and review questions.
+- [Presenter guide](demo/README.md): the ten-minute run sheet and fallback.
 - [Demo prompt](demo/prompt.txt): a copyable task brief.
-- [Reference script](demo/reference/analyze.py): uses only Python's standard library.
-- [Prepared chart](demo/reference/outputs/yearly_roa.svg).
-- [Prepared table](demo/reference/outputs/yearly_roa.csv).
-- [Diagnostics](demo/reference/outputs/diagnostics.json) and
-  [methods note](demo/reference/outputs/methods.md).
+- [FRED CSV snapshot](demo/fred/fred_snapshot.csv): saved on 23 September 2026.
+- [Download script](demo/fred/fetch.ps1): refreshes the public CSV without an API key.
+- [Stata do-file](demo/fred/analyze.do): creates the prepared outputs.
+- [Prepared chart](demo/fred/reference/inflation_fedfunds.png),
+  [analysis CSV](demo/fred/reference/monthly_analysis.csv),
+  [data audit](demo/fred/reference/audit.txt) and
+  [methods note](demo/fred/reference/methods.md).
 
-Run the fallback from the repository root:
-
-    python demo/reference/analyze.py
-
-The live demo should begin from the dataset and prompt in a fresh folder. The
-reference implementation is a separately labelled fallback, not material for the
-live agent to copy. No package installation is needed for the reference script.
+Stata's built-in FRED API command requires a personal key. None is configured
+on this workstation, so the live route uses FRED's public CSV download and
+imports it into Stata. The saved snapshot makes the prepared result reproducible
+if the network is unavailable. The earlier synthetic-firm example remains in
+the repository as an optional offline exercise.
 
 ## Repository contents
 
     index.html                         Slide deck, styles and presenter notes
-    assets/compustat_sample.csv         Original synthetic teaching data
+    assets/compustat_sample.csv         Earlier synthetic teaching data
     assets/images/Finance.png           Original Utrecht Finance logo
     assets/images/slides-qr.svg         QR for the public presentation URL
     assets/vendor/reveal/               Pinned runtime and license
     demo/README.md                     Presenter instructions
     demo/prompt.txt                    Live task brief
-    demo/reference/                    Executable fallback and checked outputs
+    demo/fred/                         Public FRED snapshot, Stata analysis and outputs
+    demo/reference/                    Earlier synthetic analysis
 
 ## Preserved original
 

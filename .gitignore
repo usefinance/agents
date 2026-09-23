@@ -1,3 +1,6 @@
 __pycache__/
 demo/live/
 demo/live-fallback/
+demo/fred/live/
+/analyze.log
+/live.log
