@@ -122,10 +122,13 @@
     .visual-steps .step { padding:28px 14px; font-size:28px; }
     .step-detail { color:var(--muted); font-size:16px; font-weight:400; margin-top:16px; }
     .big-statement { margin-top:38px; padding:22px 28px; background:var(--panel); border-left:6px solid var(--gold); font-size:31px; font-weight:700; }
-    .capability-grid .card { min-height:186px; }
+    .skill-grid { align-items:stretch; margin-top:48px; }
+    .skill-grid .card { min-height:210px; }
+    .skill-grid .card h3 { margin-top:12px; }
+    .skill-grid .card p { font-size:22px; }
     .failure-grid .card { min-height:155px; }
-    .capability-grid .card h3,.failure-grid .card h3 { margin-bottom:8px; }
-    .capability-grid .card .visual-icon,.failure-grid .card .visual-icon { font-size:42px; margin:0 0 8px; }
+    .failure-grid .card h3 { margin-bottom:8px; }
+    .failure-grid .card .visual-icon { font-size:42px; margin:0 0 8px; }
     #wrong-results .big-statement { margin-top:25px; padding:16px 26px; font-size:28px; }
     .risk-diagram { display:grid; grid-template-columns:1.15fr 70px 1fr; gap:18px; align-items:center; margin-top:36px; }
     .terminal-card { padding:28px 32px; border-radius:14px; background:#24241f; color:#fff; font:25px Consolas,monospace; line-height:1.8; }
@@ -268,16 +271,15 @@ say what you could not verify. Do not make a causal claim.</pre>
 </section>
 
 <section id="capabilities">
-  <span class="eyebrow">05 · What becomes possible</span>
-  <h2>From a request to an artifact</h2>
-  <div class="grid four review-grid capability-grid">
-    <div class="card"><div class="visual-icon" aria-hidden="true">⌕</div><h3>Inspect</h3><p>Files and sources</p></div>
-    <div class="card"><div class="visual-icon" aria-hidden="true">✎</div><h3>Create</h3><p>Code, slides, tools</p></div>
-    <div class="card"><div class="visual-icon" aria-hidden="true">▶</div><h3>Run</h3><p>Analysis and checks</p></div>
-    <div class="card gold"><div class="visual-icon" aria-hidden="true">↻</div><h3>Revise</h3><p>After feedback</p></div>
+  <span class="eyebrow">05 · What you can add</span>
+  <h2>A skill is a reusable playbook</h2>
+  <div class="grid three skill-grid">
+    <div class="card"><span class="label">Request</span><div class="visual-icon" aria-hidden="true">?</div><h3>Check my citations</h3></div>
+    <div class="card gold"><span class="label">Skill</span><div class="visual-icon" aria-hidden="true">▤</div><h3>Citation-check workflow</h3><p>Academic Research Suite</p></div>
+    <div class="card"><span class="label">Output to review</span><div class="visual-icon" aria-hidden="true">✓</div><h3>Sources and flags</h3></div>
   </div>
-  <div class="bar soft">Useful outputs are files and evidence you can inspect.</div>
-  <aside class="notes">15:00–18:00 (3 minutes). Show breadth without a product list: agents can search a project, create scripts or a small teaching site, run available software, and refine outputs based on tests or human feedback. The actual ability depends on its tools, access and environment. Some tasks finish in minutes; complex tasks may still need substantial steering. A polished artifact is not proof of quality.</aside>
+  <div class="bar soft">Skills guide steps. Tools provide access. You judge the evidence.</div>
+  <aside class="notes">15:00–18:00 (3 minutes). The installed Academic Research Suite is a concrete example of a skill package. It routes requests to workflows such as citation checking, literature review and manuscript review. A skill is reusable instructions and supporting material that an agent can load for a task; it is not another model and does not grant access to databases or software on its own. The agent still needs the relevant tools and the researcher still checks sources and claims. Skills can be added or written for local workflows, but review the provenance and instructions of third-party skills before using them. Do not imply that following a citation-check workflow guarantees every citation is valid. Research and teaching use cases appear later in the deck.</aside>
 </section>
 
 <section id="wrong-results">
