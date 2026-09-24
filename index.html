@@ -481,11 +481,22 @@ Include instructions so I can reproduce the result.</code></pre>
   var notesDialog = document.getElementById("speaker-notes-dialog");
   var notesContent = document.getElementById("speaker-notes-content");
   var copyNotePrompt = document.getElementById("copy-note-prompt");
+  function openExternalLinksInNewTabs(root) {
+    root.querySelectorAll("a[href]").forEach(function(link) {
+      var url = new URL(link.href, window.location.href);
+      if ((url.protocol === "http:" || url.protocol === "https:") && url.origin !== window.location.origin) {
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      }
+    });
+  }
+  openExternalLinksInNewTabs(document);
   function showSpeakerNotes() {
     var slide = Reveal.getCurrentSlide();
     var notes = slide.querySelector("aside.notes");
     document.getElementById("speaker-notes-title").textContent = "Speaker notes · Slide " + (Reveal.getIndices().h + 1);
     notesContent.innerHTML = notes ? notes.innerHTML : "<p>No notes for this slide.</p>";
+    openExternalLinksInNewTabs(notesContent);
     copyNotePrompt.hidden = !notesContent.querySelector("pre");
     copyNotePrompt.textContent = "Copy prompt";
     if (!notesDialog.open) notesDialog.showModal();
